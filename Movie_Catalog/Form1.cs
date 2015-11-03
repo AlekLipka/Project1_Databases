@@ -19,8 +19,9 @@ namespace Movie_Catalog
             this.CenterToScreen();
         }
 
+        #region  WindowResize
         protected override void WndProc(ref Message m)
-        {
+        {   //Function that keeps the ratio of the form while it is being resized (13:9)
             if (m.Msg == 0x216 || m.Msg == 0x214)
             {
                 // Keep the window ratio
@@ -45,13 +46,18 @@ namespace Movie_Catalog
             public int Bottom;
         }
 
+        #endregion
+
+        #region Menu 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Method for all the exit buttons
             Methods.Exit();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //Method for the About section in the menu
             var monoFlat_NotificationBox1 = new MonoFlat.MonoFlat_NotificationBox();
             monoFlat_NotificationBox1.BorderCurve = 8;
             monoFlat_NotificationBox1.Font = new System.Drawing.Font("Tahoma", 9F);
@@ -64,8 +70,44 @@ namespace Movie_Catalog
             monoFlat_NotificationBox1.ShowCloseButton = true;
             monoFlat_NotificationBox1.Size = new System.Drawing.Size(400, 250);
             monoFlat_NotificationBox1.TabIndex = 2;
-            monoFlat_NotificationBox1.Text = "\n\n\n\t\tMovie Catalog 1.0     \n\n\t\tCreated by:\n \t\tAleksander Lipka\n \t\tPiotr Lustyk";
+            monoFlat_NotificationBox1.Text = "\n\n\n\t\tMovie Catalog 1.0     \n\n\t\tCreated by:\n \t\tAleksander Lipka\n \t\tPiotr Lutyk";
             monoFlat_ThemeContainer1.Controls.Add(monoFlat_NotificationBox1);
+        }
+
+        private void fileToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            //Single movie loading function
+            Methods.LoadFile();
+        }
+        #endregion
+
+        private void monoFlat_Button1_Click(object sender, EventArgs e)
+        {
+            string login = monoFlat_TextBox1.Text;
+            bool validation = Methods.LoginFunction(monoFlat_TextBox1.Text, monoFlat_TextBox2.Text);
+            if (validation)
+            {
+                monoFlat_TextBox1.Visible = false;
+                monoFlat_TextBox1.Text = null;
+                monoFlat_TextBox2.Visible = false;
+                monoFlat_TextBox2.Text = null;
+                monoFlat_Label1.Visible = false;
+                monoFlat_Label2.Visible = false;
+                monoFlat_Button1.Visible = false;
+
+
+                var welcome = new MonoFlat.MonoFlat_Label();
+                welcome.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+                welcome.AutoSize = true;
+                welcome.BackColor = System.Drawing.Color.Transparent;
+                welcome.Font = new System.Drawing.Font("Segoe UI", 9F);
+                welcome.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(116)))), ((int)(((byte)(125)))), ((int)(((byte)(132)))));
+                welcome.Location = new System.Drawing.Point(this.Width - welcome.Width*2, 113);
+                welcome.Name = "monoFlat_Label1";
+                welcome.TabIndex = 5;
+                welcome.Text = ("Welcome " + login);
+                monoFlat_ThemeContainer1.Controls.Add(welcome);
+            }
         }
     }
 }
