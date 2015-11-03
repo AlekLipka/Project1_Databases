@@ -29,7 +29,7 @@ namespace Movie_Catalog
                 int w = rc.Right - rc.Left;
                 int h = rc.Bottom - rc.Top;
                 int z = w > h ? w : h;
-                rc.Bottom = rc.Top + z - 400;
+                rc.Bottom = rc.Top + z - 429;
                 rc.Right = rc.Left + z;
                 Marshal.StructureToPtr(rc, m.LParam, false);
                 m.Result = (IntPtr)1;
@@ -75,12 +75,26 @@ namespace Movie_Catalog
         }
 
         private void fileToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            //Single movie loading function
+        {  //Single movie loading function
             Methods.LoadFile();
+        }
+
+        private void folderToolStripMenuItem_Click(object sender, EventArgs e)
+        {  //Direcory movie loading function
+            string directory;
+            directory = Methods.LoadFromDirecotory();
+            List<String> NewMoviesFromDirecotry = new List<String>();
+            NewMoviesFromDirecotry = Methods.GetAllFilesToList(directory);
+            string name;
+            foreach (var element in NewMoviesFromDirecotry)
+            {
+                name = System.IO.Path.GetFileNameWithoutExtension(element);
+                Methods.AddMovie(name);
+            }
         }
         #endregion
 
+        #region Login
         private void monoFlat_Button1_Click(object sender, EventArgs e)
         {
             string login = monoFlat_TextBox1.Text;
@@ -109,5 +123,6 @@ namespace Movie_Catalog
                 monoFlat_ThemeContainer1.Controls.Add(welcome);
             }
         }
+        #endregion
     }
 }
