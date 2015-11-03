@@ -83,13 +83,16 @@ namespace Movie_Catalog
         {  //Direcory movie loading function
             string directory;
             directory = Methods.LoadFromDirecotory();
-            List<String> NewMoviesFromDirecotry = new List<String>();
-            NewMoviesFromDirecotry = Methods.GetAllFilesToList(directory);
-            string name;
-            foreach (var element in NewMoviesFromDirecotry)
+            if (directory != null)
             {
-                name = System.IO.Path.GetFileNameWithoutExtension(element);
-                Methods.AddMovie(name);
+                List<String> NewMoviesFromDirecotry = new List<String>();
+                NewMoviesFromDirecotry = Methods.GetAllFilesToList(directory);
+                string name;
+                foreach (var element in NewMoviesFromDirecotry)
+                {
+                    name = System.IO.Path.GetFileNameWithoutExtension(element);
+                    Methods.AddMovie(name);
+                }
             }
         }
         #endregion

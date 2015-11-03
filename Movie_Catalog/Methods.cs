@@ -71,8 +71,10 @@ namespace Movie_Catalog
         public static string LoadFromDirecotory()
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
-            DialogResult result = fbd.ShowDialog();
-            return fbd.SelectedPath;
+            if (fbd.ShowDialog() == DialogResult.OK)
+                return fbd.SelectedPath;
+            else
+                return null;
         }
 
         public static List<String> GetAllFilesToList(String directory)
