@@ -71,7 +71,7 @@ namespace Movie_Catalog
             monoFlat_NotificationBox1.Size = new System.Drawing.Size(400, 250);
             monoFlat_NotificationBox1.TabIndex = 2;
             monoFlat_NotificationBox1.Text = "\n\n\n\t\tMovie Catalog 1.0     \n\n\t\tCreated by:\n \t\tAleksander Lipka\n \t\tPiotr Lutyk";
-            monoFlat_ThemeContainer1.Controls.Add(monoFlat_NotificationBox1);
+            monoFlat_ThemeContainer1.Controls.Add(monoFlat_NotificationBox1); ///Komentarz
         }
 
         private void fileToolStripMenuItem1_Click(object sender, EventArgs e)
