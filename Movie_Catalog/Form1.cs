@@ -13,10 +13,13 @@ namespace Movie_Catalog
 {
     public partial class Form1 : Form
     {
+        public static MonoFlat.MonoFlat_NotificationBox loginError = new MonoFlat.MonoFlat_NotificationBox();
+        public static System.Timers.Timer promptDispose = new System.Timers.Timer();
         public Form1()
         {
             InitializeComponent();
             this.CenterToScreen();
+            RefreshGrid();
         }
 
         #region  WindowResize
@@ -33,6 +36,13 @@ namespace Movie_Catalog
                 rc.Right = rc.Left + z;
                 Marshal.StructureToPtr(rc, m.LParam, false);
                 m.Result = (IntPtr)1;
+                int wwx = dataGridView1.Height;
+                int wwy = dataGridView1.Width;
+                if (this.Width >= 1200)
+                {
+                    dataGridView1.Width = w - dataGridView1.Margin.Left - dataGridView1.Margin.Right - 13;
+                    dataGridView1.Height = z - 429 - dataGridView1.Location.Y - 10;
+                }
                 return;
             }
             base.WndProc(ref m);
@@ -70,17 +80,36 @@ namespace Movie_Catalog
             monoFlat_NotificationBox1.ShowCloseButton = true;
             monoFlat_NotificationBox1.Size = new System.Drawing.Size(400, 250);
             monoFlat_NotificationBox1.TabIndex = 2;
-            monoFlat_NotificationBox1.Text = "\n\n\n\t\tMovie Catalog 1.0     \n\n\t\tCreated by:\n \t\tAleksander Lipka\n \t\tPiotr Lutyk";
-            monoFlat_ThemeContainer1.Controls.Add(monoFlat_NotificationBox1); ///Komentarz
+            monoFlat_NotificationBox1.Text = "\n\n\n\t\tMovie Catalog 1.0     \n\n\t\tCreated by:\n \t\tAleksander Lipka\n \t\tPiotr Lustyk";
+            monoFlat_ThemeContainer1.Controls.Add(monoFlat_NotificationBox1);
+            monoFlat_NotificationBox1.BringToFront();
         }
 
         private void fileToolStripMenuItem1_Click(object sender, EventArgs e)
         {  //Single movie loading function
+            Cursor.Current = Cursors.WaitCursor;
             Methods.LoadFile();
+            RefreshGrid();
+            Cursor.Current = Cursors.Default;
         }
+
+        private void RefreshGrid()
+        {
+            List<MainMovieList> movieList = new List<MainMovieList>();
+
+            movieList = Methods.AddItemToListView();
+
+            dataGridView1.DataSource = movieList;
+            DataGridViewColumn column = dataGridView1.Columns[0];
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            column.Width = 60;
+        }
+
 
         private void folderToolStripMenuItem_Click(object sender, EventArgs e)
         {  //Direcory movie loading function
+            Cursor.Current = Cursors.WaitCursor;
             string directory;
             directory = Methods.LoadFromDirecotory();
             if (directory != null)
@@ -93,7 +122,9 @@ namespace Movie_Catalog
                     name = System.IO.Path.GetFileNameWithoutExtension(element);
                     Methods.AddMovie(name);
                 }
+                RefreshGrid();
             }
+            Cursor.Current = Cursors.Default;
         }
         #endregion
 
@@ -111,21 +142,80 @@ namespace Movie_Catalog
                 monoFlat_Label1.Visible = false;
                 monoFlat_Label2.Visible = false;
                 monoFlat_Button1.Visible = false;
+                monoFlat_Panel1.Visible = false;
+                monoFlat_LinkLabel2.Visible = true;
 
-
-                var welcome = new MonoFlat.MonoFlat_Label();
-                welcome.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-                welcome.AutoSize = true;
-                welcome.BackColor = System.Drawing.Color.Transparent;
-                welcome.Font = new System.Drawing.Font("Segoe UI", 9F);
-                welcome.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(116)))), ((int)(((byte)(125)))), ((int)(((byte)(132)))));
-                welcome.Location = new System.Drawing.Point(this.Width - welcome.Width*2, 113);
-                welcome.Name = "monoFlat_Label1";
-                welcome.TabIndex = 5;
                 welcome.Text = ("Welcome " + login);
-                monoFlat_ThemeContainer1.Controls.Add(welcome);
+                welcome.Location = new System.Drawing.Point(this.Width - welcome.Width- monoFlat_LinkLabel2.Width - welcome.Margin.Left
+                                                            - welcome.Margin.Right - monoFlat_LinkLabel2.Margin.Left 
+                                                            - monoFlat_LinkLabel2.Margin.Right, 113);
+                welcome.Visible = true;
+
+                monoFlat_TextBox2.Text = "*****";
+                monoFlat_TextBox2.Enter -= TextBoxEnter;
+
+                monoFlat_LinkLabel2.Location = new Point(welcome.Location.X + welcome.Width , welcome.Location.Y);
+            }
+            else
+            {
+                loginError.BorderCurve = 8;
+                loginError.Font = new System.Drawing.Font("Tahoma", 9F);
+                loginError.Image = null;
+                loginError.Location = new System.Drawing.Point(this.Width / 2 + 420, this.Height / 2 - 350);
+                loginError.MinimumSize = new System.Drawing.Size(100, 40);
+                loginError.Name = "monoFlat_NotificationBox1";
+                loginError.NotificationType = MonoFlat.MonoFlat_NotificationBox.Type.Error;
+                loginError.RoundCorners = true;
+                loginError.ShowCloseButton = true;
+                loginError.Size = new System.Drawing.Size(200, 85);
+                loginError.TabIndex = 9;
+                loginError.Text = "Log In Error:\nYour password or user is incorrenct.";
+                monoFlat_ThemeContainer1.Controls.Add(loginError);
+                loginError.BringToFront();
+                //promptDispose.Elapsed += new System.Timers.ElapsedEventHandler(OnTimerEvent);
+                //promptDispose.Interval = 1000;
+                //promptDispose.Enabled = true;
+            }
+        }
+        public static int time = 0;
+        private static void OnTimerEvent(object source, System.Timers.ElapsedEventArgs e)
+        {
+            time++;
+            if (time == 5)
+            {
+                time = 0;
+                promptDispose.Enabled = false;
+                loginError.Dispose();
             }
         }
         #endregion
+
+        private void monoFlat_LinkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LoginPrompt login = new LoginPrompt();
+            login.Show();
+        }
+
+        private void monoFlat_LinkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            monoFlat_TextBox1.Visible = true;
+            monoFlat_TextBox2.Visible = true;
+            monoFlat_Label1.Visible = true;
+            monoFlat_Label2.Visible = true;
+            monoFlat_Button1.Visible = true;
+            monoFlat_Panel1.Visible = true;
+            monoFlat_LinkLabel2.Visible = false;
+
+            welcome.Text = null;
+            welcome.Visible = false;
+
+        }
+
+        void TextBoxEnter(object sender, System.EventArgs e)
+        {
+            MonoFlat.MonoFlat_TextBox TextBox = sender as MonoFlat.MonoFlat_TextBox;
+            TextBox.Text = null;
+            TextBox.Enter -= TextBoxEnter;
+        }
     }
 }

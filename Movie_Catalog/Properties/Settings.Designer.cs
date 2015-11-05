@@ -34,5 +34,29 @@ namespace Movie_Catalog.Properties {
                 this["MovieNo"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FolderPath {
+            get {
+                return ((string)(this["FolderPath"]));
+            }
+            set {
+                this["FolderPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FolderFilePath {
+            get {
+                return ((string)(this["FolderFilePath"]));
+            }
+            set {
+                this["FolderFilePath"] = value;
+            }
+        }
     }
 }

@@ -26,5 +26,6 @@ namespace Movie_Catalog
         }
     
         public virtual DbSet<MainMovieList> MainMovieLists { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

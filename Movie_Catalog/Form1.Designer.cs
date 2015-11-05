@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.monoFlat_ThemeContainer1 = new MonoFlat.MonoFlat_ThemeContainer();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.welcome = new MonoFlat.MonoFlat_Label();
+            this.monoFlat_LinkLabel2 = new MonoFlat.MonoFlat_LinkLabel();
             this.monoFlat_Label2 = new MonoFlat.MonoFlat_Label();
             this.monoFlat_Label1 = new MonoFlat.MonoFlat_Label();
             this.monoFlat_Button1 = new MonoFlat.MonoFlat_Button();
@@ -49,14 +49,21 @@
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.monoFlat_Panel1 = new MonoFlat.MonoFlat_Panel();
+            this.monoFlat_LinkLabel1 = new MonoFlat.MonoFlat_LinkLabel();
+            this.monoFlat_Label3 = new MonoFlat.MonoFlat_Label();
             this.monoFlat_ThemeContainer1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.monoFlat_Panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // monoFlat_ThemeContainer1
             // 
             this.monoFlat_ThemeContainer1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(41)))), ((int)(((byte)(50)))));
-            this.monoFlat_ThemeContainer1.Controls.Add(this.listView1);
+            this.monoFlat_ThemeContainer1.Controls.Add(this.welcome);
+            this.monoFlat_ThemeContainer1.Controls.Add(this.monoFlat_LinkLabel2);
             this.monoFlat_ThemeContainer1.Controls.Add(this.monoFlat_Label2);
             this.monoFlat_ThemeContainer1.Controls.Add(this.monoFlat_Label1);
             this.monoFlat_ThemeContainer1.Controls.Add(this.monoFlat_Button1);
@@ -64,6 +71,8 @@
             this.monoFlat_ThemeContainer1.Controls.Add(this.monoFlat_TextBox1);
             this.monoFlat_ThemeContainer1.Controls.Add(this.monoFlat_ControlBox1);
             this.monoFlat_ThemeContainer1.Controls.Add(this.menuStrip1);
+            this.monoFlat_ThemeContainer1.Controls.Add(this.dataGridView1);
+            this.monoFlat_ThemeContainer1.Controls.Add(this.monoFlat_Panel1);
             this.monoFlat_ThemeContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.monoFlat_ThemeContainer1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.monoFlat_ThemeContainer1.Location = new System.Drawing.Point(0, 0);
@@ -77,32 +86,38 @@
             this.monoFlat_ThemeContainer1.TabIndex = 0;
             this.monoFlat_ThemeContainer1.Text = "Movie Catalog";
             // 
-            // listView1
+            // welcome
             // 
-            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listView1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2});
-            this.listView1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.listView1.Location = new System.Drawing.Point(13, 162);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(1256, 671);
-            this.listView1.TabIndex = 7;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.welcome.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.welcome.AutoSize = true;
+            this.welcome.BackColor = System.Drawing.Color.Transparent;
+            this.welcome.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.welcome.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(116)))), ((int)(((byte)(125)))), ((int)(((byte)(132)))));
+            this.welcome.Location = new System.Drawing.Point(1034, 130);
+            this.welcome.Name = "welcome";
+            this.welcome.Size = new System.Drawing.Size(0, 20);
+            this.welcome.TabIndex = 13;
+            this.welcome.Visible = false;
             // 
-            // columnHeader1
+            // monoFlat_LinkLabel2
             // 
-            this.columnHeader1.Text = "Movie Name";
-            this.columnHeader1.Width = 564;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "File Name";
-            this.columnHeader2.Width = 449;
+            this.monoFlat_LinkLabel2.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.monoFlat_LinkLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.monoFlat_LinkLabel2.AutoSize = true;
+            this.monoFlat_LinkLabel2.BackColor = System.Drawing.Color.Transparent;
+            this.monoFlat_LinkLabel2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.monoFlat_LinkLabel2.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.monoFlat_LinkLabel2.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(41)))), ((int)(((byte)(42)))));
+            this.monoFlat_LinkLabel2.Location = new System.Drawing.Point(1202, 130);
+            this.monoFlat_LinkLabel2.Margin = new System.Windows.Forms.Padding(5, 0, 3, 0);
+            this.monoFlat_LinkLabel2.Name = "monoFlat_LinkLabel2";
+            this.monoFlat_LinkLabel2.Size = new System.Drawing.Size(62, 20);
+            this.monoFlat_LinkLabel2.TabIndex = 12;
+            this.monoFlat_LinkLabel2.TabStop = true;
+            this.monoFlat_LinkLabel2.Text = "Log Out";
+            this.monoFlat_LinkLabel2.Visible = false;
+            this.monoFlat_LinkLabel2.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(41)))), ((int)(((byte)(42)))));
+            this.monoFlat_LinkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.monoFlat_LinkLabel2_LinkClicked);
             // 
             // monoFlat_Label2
             // 
@@ -162,6 +177,7 @@
             this.monoFlat_TextBox2.Text = "Password";
             this.monoFlat_TextBox2.TextAlignment = System.Windows.Forms.HorizontalAlignment.Left;
             this.monoFlat_TextBox2.UseSystemPasswordChar = true;
+            this.monoFlat_TextBox2.Enter += new System.EventHandler(this.TextBoxEnter);
             // 
             // monoFlat_TextBox1
             // 
@@ -179,6 +195,7 @@
             this.monoFlat_TextBox1.TabIndex = 2;
             this.monoFlat_TextBox1.TextAlignment = System.Windows.Forms.HorizontalAlignment.Left;
             this.monoFlat_TextBox1.UseSystemPasswordChar = false;
+            this.monoFlat_TextBox1.Enter += new System.EventHandler(this.TextBoxEnter);
             // 
             // monoFlat_ControlBox1
             // 
@@ -221,32 +238,32 @@
             this.fileToolStripMenuItem1,
             this.folderToolStripMenuItem});
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(175, 24);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(106, 24);
             this.openToolStripMenuItem.Text = "Add";
             // 
             // fileToolStripMenuItem1
             // 
             this.fileToolStripMenuItem1.Name = "fileToolStripMenuItem1";
-            this.fileToolStripMenuItem1.Size = new System.Drawing.Size(175, 24);
+            this.fileToolStripMenuItem1.Size = new System.Drawing.Size(120, 24);
             this.fileToolStripMenuItem1.Text = "File";
             this.fileToolStripMenuItem1.Click += new System.EventHandler(this.fileToolStripMenuItem1_Click);
             // 
             // folderToolStripMenuItem
             // 
             this.folderToolStripMenuItem.Name = "folderToolStripMenuItem";
-            this.folderToolStripMenuItem.Size = new System.Drawing.Size(175, 24);
+            this.folderToolStripMenuItem.Size = new System.Drawing.Size(120, 24);
             this.folderToolStripMenuItem.Text = "Folder";
             this.folderToolStripMenuItem.Click += new System.EventHandler(this.folderToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(172, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(103, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(175, 24);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(106, 24);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -271,6 +288,61 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // dataGridView1
+            // 
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(10, 202);
+            this.dataGridView1.MinimumSize = new System.Drawing.Size(1262, 642);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 24;
+            this.dataGridView1.Size = new System.Drawing.Size(1262, 642);
+            this.dataGridView1.TabIndex = 8;
+            // 
+            // monoFlat_Panel1
+            // 
+            this.monoFlat_Panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.monoFlat_Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(51)))), ((int)(((byte)(63)))));
+            this.monoFlat_Panel1.Controls.Add(this.monoFlat_LinkLabel1);
+            this.monoFlat_Panel1.Controls.Add(this.monoFlat_Label3);
+            this.monoFlat_Panel1.Location = new System.Drawing.Point(1186, 153);
+            this.monoFlat_Panel1.Name = "monoFlat_Panel1";
+            this.monoFlat_Panel1.Padding = new System.Windows.Forms.Padding(5);
+            this.monoFlat_Panel1.Size = new System.Drawing.Size(86, 30);
+            this.monoFlat_Panel1.TabIndex = 11;
+            this.monoFlat_Panel1.Text = "monoFlat_Panel1";
+            // 
+            // monoFlat_LinkLabel1
+            // 
+            this.monoFlat_LinkLabel1.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.monoFlat_LinkLabel1.AutoSize = true;
+            this.monoFlat_LinkLabel1.BackColor = System.Drawing.Color.Transparent;
+            this.monoFlat_LinkLabel1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.monoFlat_LinkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.monoFlat_LinkLabel1.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(41)))), ((int)(((byte)(42)))));
+            this.monoFlat_LinkLabel1.Location = new System.Drawing.Point(25, 5);
+            this.monoFlat_LinkLabel1.Name = "monoFlat_LinkLabel1";
+            this.monoFlat_LinkLabel1.Size = new System.Drawing.Size(61, 20);
+            this.monoFlat_LinkLabel1.TabIndex = 9;
+            this.monoFlat_LinkLabel1.TabStop = true;
+            this.monoFlat_LinkLabel1.Text = "Sign Up";
+            this.monoFlat_LinkLabel1.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(41)))), ((int)(((byte)(42)))));
+            this.monoFlat_LinkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.monoFlat_LinkLabel1_LinkClicked);
+            // 
+            // monoFlat_Label3
+            // 
+            this.monoFlat_Label3.AutoSize = true;
+            this.monoFlat_Label3.BackColor = System.Drawing.Color.Transparent;
+            this.monoFlat_Label3.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.monoFlat_Label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(116)))), ((int)(((byte)(125)))), ((int)(((byte)(132)))));
+            this.monoFlat_Label3.Location = new System.Drawing.Point(1, 5);
+            this.monoFlat_Label3.Name = "monoFlat_Label3";
+            this.monoFlat_Label3.Size = new System.Drawing.Size(23, 20);
+            this.monoFlat_Label3.TabIndex = 10;
+            this.monoFlat_Label3.Text = "or";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -280,7 +352,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(1200, 0);
+            this.MinimumSize = new System.Drawing.Size(1282, 0);
             this.Name = "Form1";
             this.Text = "Movie Catalog";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
@@ -288,6 +360,9 @@
             this.monoFlat_ThemeContainer1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.monoFlat_Panel1.ResumeLayout(false);
+            this.monoFlat_Panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -311,9 +386,12 @@
         private MonoFlat.MonoFlat_TextBox monoFlat_TextBox2;
         private MonoFlat.MonoFlat_TextBox monoFlat_TextBox1;
         private MonoFlat.MonoFlat_Label monoFlat_Label2;
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private MonoFlat.MonoFlat_Panel monoFlat_Panel1;
+        private MonoFlat.MonoFlat_LinkLabel monoFlat_LinkLabel1;
+        private MonoFlat.MonoFlat_Label monoFlat_Label3;
+        private MonoFlat.MonoFlat_LinkLabel monoFlat_LinkLabel2;
+        private MonoFlat.MonoFlat_Label welcome;
     }
 }
 

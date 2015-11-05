@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using System.IO;
 using System.Data.Entity.Validation;
 
@@ -40,7 +39,11 @@ namespace Movie_Catalog
             Stream myStream = null;
             OpenFileDialog open = new OpenFileDialog();
             open.Filter = "Movie file (*.mkv, *.mov, *.avi, *.mp4, *.divx, *.mpeg, *.mpg)|*.mkv;*mov;*.avi;*.mp4;*.divx;*.mpeg;*.mpg";
-            open.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //open.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            if (Properties.Settings.Default.FolderPath != null)
+            {
+                open.InitialDirectory = Properties.Settings.Default.FolderFilePath;
+            }
 
             if (open.ShowDialog() == DialogResult.OK)
             {
@@ -55,6 +58,8 @@ namespace Movie_Catalog
                             
                             if (fs != null)
                             {
+                                Properties.Settings.Default.FolderFilePath = fs.Name;
+                                Properties.Settings.Default.Save();
                                 Name = System.IO.Path.GetFileNameWithoutExtension(fs.Name);
                                 AddMovie(Name);
                             }
@@ -71,8 +76,14 @@ namespace Movie_Catalog
         public static string LoadFromDirecotory()
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
-            if (fbd.ShowDialog() == DialogResult.OK)
+            if (Properties.Settings.Default.FolderPath != null)
+                fbd.SelectedPath = Properties.Settings.Default.FolderPath;
+
+            if (fbd.ShowDialog() == DialogResult.OK){
+                Properties.Settings.Default.FolderPath = fbd.SelectedPath;
+                Properties.Settings.Default.Save();
                 return fbd.SelectedPath;
+            }
             else
                 return null;
         }
@@ -89,16 +100,18 @@ namespace Movie_Catalog
         { //Adds a movie id and movie name to database
             try
             {
-                Properties.Settings.Default.MovieNo += 1;
+                Properties.Settings.Default.MovieNo = 7;
                 Properties.Settings.Default.Save();
                 MovieDatabaseEntities db = new MovieDatabaseEntities();
 
                 MainMovieList objMovie = new MainMovieList();
-                objMovie.ID = Properties.Settings.Default.MovieNo;
+                //objMovie.ID = Properties.Settings.Default.MovieNo;
                 objMovie.File_Name = FileName;
 
                 db.MainMovieLists.Add(objMovie);
                 db.SaveChanges();
+
+
             }
             catch (DbEntityValidationException e)
             { //In case of error while adding stuff to database
@@ -120,14 +133,24 @@ namespace Movie_Catalog
 
         public static bool LoginFunction(String login, String pass)
         {
-            bool validation = true;
-            MessageBox.Show(login + " " + pass);
+            bool validation = false;
+
+            // Code for validation from database
+            MovieDatabaseEntities db = new MovieDatabaseEntities();
+            foreach (var user in db.Users) {
+                if (user.Username == login && user.Password == pass)
+                {
+                    validation = true;
+                }
+            }
             return validation;
         }
 
-        /*
+        
         public static List<MainMovieList> AddItemToListView()
         {
+
+
             MovieDatabaseEntities db = new MovieDatabaseEntities();
 
             var movieQuery = from mov in db.MainMovieLists select mov;
@@ -135,6 +158,6 @@ namespace Movie_Catalog
             List<MainMovieList> movieList = movieQuery.ToList();
 
             return movieList;
-        }*/
+        }
     }
 }
