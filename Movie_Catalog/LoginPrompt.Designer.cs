@@ -140,7 +140,7 @@
             this.monoFlat_TextBox3.ReadOnly = false;
             this.monoFlat_TextBox3.Size = new System.Drawing.Size(295, 46);
             this.monoFlat_TextBox3.TabIndex = 3;
-            this.monoFlat_TextBox3.Text = "*****";
+            this.monoFlat_TextBox3.Text = "****";
             this.monoFlat_TextBox3.TextAlignment = System.Windows.Forms.HorizontalAlignment.Left;
             this.monoFlat_TextBox3.UseSystemPasswordChar = true;
             this.monoFlat_TextBox3.Enter += new System.EventHandler(this.TextBoxEnter);
@@ -158,7 +158,7 @@
             this.monoFlat_TextBox2.ReadOnly = false;
             this.monoFlat_TextBox2.Size = new System.Drawing.Size(295, 46);
             this.monoFlat_TextBox2.TabIndex = 2;
-            this.monoFlat_TextBox2.Text = "*****";
+            this.monoFlat_TextBox2.Text = "****";
             this.monoFlat_TextBox2.TextAlignment = System.Windows.Forms.HorizontalAlignment.Left;
             this.monoFlat_TextBox2.UseSystemPasswordChar = true;
             this.monoFlat_TextBox2.Enter += new System.EventHandler(this.TextBoxEnter);

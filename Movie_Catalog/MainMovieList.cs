@@ -14,8 +14,15 @@ namespace Movie_Catalog
     
     public partial class MainMovieList
     {
+        public MainMovieList()
+        {
+            this.Favourite_Hated = new HashSet<Favourite_Hated>();
+        }
+    
         public int ID { get; set; }
         public string Movie_Name { get; set; }
         public string File_Name { get; set; }
+    
+        public virtual ICollection<Favourite_Hated> Favourite_Hated { get; set; }
     }
 }

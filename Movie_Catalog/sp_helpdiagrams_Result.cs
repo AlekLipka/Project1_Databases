@@ -10,19 +10,13 @@
 namespace Movie_Catalog
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class User
+    public partial class sp_helpdiagrams_Result
     {
-        public User()
-        {
-            this.Favourite_Hated = new HashSet<Favourite_Hated>();
-        }
-    
-        public int UserID { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-    
-        public virtual ICollection<Favourite_Hated> Favourite_Hated { get; set; }
+        public string Database { get; set; }
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public string Owner { get; set; }
+        public int OwnerID { get; set; }
     }
 }

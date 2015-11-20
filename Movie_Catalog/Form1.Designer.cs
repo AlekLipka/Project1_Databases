@@ -243,6 +243,7 @@
             // 
             // fileToolStripMenuItem1
             // 
+            this.fileToolStripMenuItem1.Enabled = false;
             this.fileToolStripMenuItem1.Name = "fileToolStripMenuItem1";
             this.fileToolStripMenuItem1.Size = new System.Drawing.Size(120, 24);
             this.fileToolStripMenuItem1.Text = "File";
@@ -250,6 +251,7 @@
             // 
             // folderToolStripMenuItem
             // 
+            this.folderToolStripMenuItem.Enabled = false;
             this.folderToolStripMenuItem.Name = "folderToolStripMenuItem";
             this.folderToolStripMenuItem.Size = new System.Drawing.Size(120, 24);
             this.folderToolStripMenuItem.Text = "Folder";
@@ -272,6 +274,7 @@
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(73, 24);
             this.optionsToolStripMenuItem.Text = "Options";
+            this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -300,6 +303,8 @@
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(1262, 642);
             this.dataGridView1.TabIndex = 8;
+            this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellEndEdit);
+            this.dataGridView1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseClick);
             // 
             // monoFlat_Panel1
             // 
@@ -352,7 +357,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(1282, 0);
+            this.MinimumSize = new System.Drawing.Size(1282, 853);
             this.Name = "Form1";
             this.Text = "Movie Catalog";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;

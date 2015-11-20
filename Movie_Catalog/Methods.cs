@@ -16,7 +16,9 @@ namespace Movie_Catalog
     {
 
         #region Exit
-
+        /// <summary>
+        /// When called, closes application
+        /// </summary>
         public static void Exit()
         {
             DialogResult dialogResult = MessageBox.Show("Are you sure?", "Exit", MessageBoxButtons.YesNo);
@@ -32,8 +34,11 @@ namespace Movie_Catalog
 
         #endregion
 
-
         #region FileLoadingToDatabase
+        /// <summary>
+        /// Function that takes a file from the OpenFileDialog, then  
+        /// opens AddMovie() function with a filename parameter
+        /// </summary>
         public static void LoadFile()
         { //Function that takes a file, then file name and add then call a function AddMovie
             Stream myStream = null;
@@ -72,7 +77,10 @@ namespace Movie_Catalog
                 }
             }
         }
-
+        /// <summary>
+        /// Opens Folder Browser and returns the path of selected folder
+        /// </summary>
+        /// <returns>Path to the directory or null</returns>
         public static string LoadFromDirecotory()
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
@@ -87,7 +95,11 @@ namespace Movie_Catalog
             else
                 return null;
         }
-
+        /// <summary>
+        /// Add all selected films from given directory and split them into the list
+        /// </summary>
+        /// <param name="directory">A directory from which we take films</param>
+        /// <returns>Returns the list of movies from given directory</returns>
         public static List<String> GetAllFilesToList(String directory)
         {
             return Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories).Where(
@@ -95,22 +107,42 @@ namespace Movie_Catalog
                 s.EndsWith(".mpg")).ToList();
         }
 
-
+        /// <summary>
+        /// Adds a movie to database taking into consideration all possible exceptions
+        /// </summary>
+        /// <param name="FileName">Name of the movie filename</param>
         public static void AddMovie(string FileName)
         { //Adds a movie id and movie name to database
             try
             {
-                Properties.Settings.Default.MovieNo = 7;
-                Properties.Settings.Default.Save();
+                //Properties.Settings.Default.MovieNo = 7;
+                //Properties.Settings.Default.Save();
                 MovieDatabaseEntities db = new MovieDatabaseEntities();
-
                 MainMovieList objMovie = new MainMovieList();
-                //objMovie.ID = Properties.Settings.Default.MovieNo;
-                objMovie.File_Name = FileName;
 
-                db.MainMovieLists.Add(objMovie);
-                db.SaveChanges();
+                if (db.MainMovieLists.Any(o => o.File_Name == FileName))
+                {
+                    Console.WriteLine(FileName + " is already in the MainMovieList table");
+                }
+                else
+                {
+                    objMovie.File_Name = FileName;
 
+                    db.MainMovieLists.Add(objMovie);
+                    db.SaveChanges();
+                }
+
+                if (db.Favourite_Hated.Any(o => o.FilmID == objMovie.ID))
+                {
+                    Console.WriteLine(FileName + " is already in the Favourite_Hated table");
+                }
+                else
+                {
+                    User usr = new User();
+                    int CurrentID = Form1.getCurrentUserID();
+                    var searchs = db.Users.SingleOrDefault(o => o.UserID == CurrentID);
+                    AddFavouriteOrHated(-1, searchs.Username, FileName);
+                }
 
             }
             catch (DbEntityValidationException e)
@@ -131,6 +163,13 @@ namespace Movie_Catalog
 
         #endregion
 
+        #region LogIn
+        /// <summary>
+        /// Validate if a user exists in the database and if the password is correct
+        /// </summary>
+        /// <param name="login">User name given in the textbox</param>
+        /// <param name="pass">Password of user given in the textbox</param>
+        /// <returns>True if succeded, false if failed</returns>
         public static bool LoginFunction(String login, String pass)
         {
             bool validation = false;
@@ -146,18 +185,120 @@ namespace Movie_Catalog
             return validation;
         }
 
-        
-        public static List<MainMovieList> AddItemToListView()
-        {
+        #endregion
 
+        #region dataGridView functions
+
+        /// <summary>
+        /// Set information to be displayed in dataGridView1
+        /// </summary>
+        /// <returns>Return list of movies to add to dataGridView1</returns>
+        public static List<Movies> AddItemToList()
+        {
+            int UserID = Form1.getCurrentUserID();
 
             MovieDatabaseEntities db = new MovieDatabaseEntities();
 
-            var movieQuery = from mov in db.MainMovieLists select mov;
+            var movieQuery = from mml in db.MainMovieLists
+                             join fh in db.Favourite_Hated on new { ID = mml.ID } equals new { ID = fh.FilmID } into fh_join
+                             from fh in fh_join.DefaultIfEmpty()
+                             where
+                               fh.UserID == UserID
+                             select new Movies
+                             {
+                                 MovieID = mml.ID,
+                                 Movie_Name = mml.Movie_Name,
+                                 File_Name = mml.File_Name,
+                                 LikeOrDislike = fh.LikeOrDislike == 1 ? "Favourite" : (fh.LikeOrDislike == 0 ? "Hated" : "")
+                             };
 
-            List<MainMovieList> movieList = movieQuery.ToList();
+            List<Movies> movieList = movieQuery.ToList();
 
             return movieList;
         }
+
+        /// <summary>
+        /// Allows to change name of film if we click on proper column in dataGridView1
+        /// </summary>
+        /// <param name="moviename">Movie name we want to check for.</param>
+        /// <param name="filename">File name of the file we want to change</param>
+        public static void MovieNameChange(string moviename, string filename){
+            try{
+            MovieDatabaseEntities db = new MovieDatabaseEntities();
+
+            var result = db.MainMovieLists.SingleOrDefault(o => o.File_Name == filename);
+            if (result.Movie_Name != moviename)
+            {
+                result.Movie_Name = moviename;
+                db.SaveChanges();
+            }
+            }
+            catch (DbEntityValidationException e)
+            { //In case of error while adding stuff to database
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Adds information if movie is added to favourites, hated or none of them
+        /// </summary>
+        /// <param name="whichcase">Determines if movie is added to favourites or hated</param>
+        /// <param name="UserName">The name of the user that we are login in</param>
+        /// <param name="film">The name of file that we want to set</param>
+        public static void AddFavouriteOrHated(int whichcase, string UserName, string film)
+        {
+            try
+            {
+                MovieDatabaseEntities db = new MovieDatabaseEntities();
+
+                var result = db.MainMovieLists.SingleOrDefault(o => o.File_Name == film);
+
+                var usr = db.Users.SingleOrDefault(o => o.Username == UserName);
+
+                var search = db.Favourite_Hated.SingleOrDefault(o => o.FilmID == result.ID);
+
+                if (search == null)
+                {
+                    Favourite_Hated favourite = new Favourite_Hated();
+
+                    favourite.FilmID = result.ID;
+                    favourite.UserID = usr.UserID;
+                    favourite.LikeOrDislike = whichcase;
+
+                    db.Favourite_Hated.Add(favourite);
+                    db.SaveChanges();
+                }
+                else if (search.LikeOrDislike != whichcase)
+                {
+                    search.LikeOrDislike = whichcase;
+                    db.SaveChanges();
+                }
+            }
+            catch (DbEntityValidationException e)
+            { //In case of error while adding stuff to database
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                throw;
+            }
+        }
+        #endregion
     }
 }

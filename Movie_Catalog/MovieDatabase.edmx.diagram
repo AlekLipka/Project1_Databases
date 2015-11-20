@@ -5,8 +5,11 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="bc98b5cab98d4fdd9c4ecf240d27b57c" Name="Diagram1">
-        <EntityTypeShape EntityType="MovieDatabaseModel.MainMovieList" Width="1.5" PointX="1" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MovieDatabaseModel.User" Width="1.5" PointX="3.25" PointY="1.25" />
+        <EntityTypeShape EntityType="MovieDatabaseModel.Favourite_Hated" Width="1.5" PointX="3" PointY="0.875" />
+        <EntityTypeShape EntityType="MovieDatabaseModel.MainMovieList" Width="1.5" PointX="0.75" PointY="4" />
+        <EntityTypeShape EntityType="MovieDatabaseModel.User" Width="1.5" PointX="0.75" PointY="1" />
+        <AssociationConnector Association="MovieDatabaseModel.FK__Favourite__FilmI__145C0A3F" />
+        <AssociationConnector Association="MovieDatabaseModel.FK__Favourite__UserI__15502E78" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
