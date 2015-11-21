@@ -132,17 +132,21 @@ namespace Movie_Catalog
                     db.SaveChanges();
                 }
 
-                if (db.Favourite_Hated.Any(o => o.FilmID == objMovie.ID))
-                {
-                    Console.WriteLine(FileName + " is already in the Favourite_Hated table");
-                }
-                else
-                {
-                    User usr = new User();
-                    int CurrentID = Form1.getCurrentUserID();
-                    var searchs = db.Users.SingleOrDefault(o => o.UserID == CurrentID);
-                    AddFavouriteOrHated(-1, searchs.Username, FileName);
-                }
+                int usrId = Form1.getCurrentUserID();
+                Console.WriteLine("Current username: " + usrId + "\n");
+
+                    if (db.Favourite_Hated.Any(o => o.FilmID == objMovie.ID && o.UserID == usrId))
+                    {
+                        Console.WriteLine(FileName + " is already in the Favourite_Hated table");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Adding " + FileName + " to the Favourite_Hated table for user with id: " + usrId);
+                        User usr = new User();
+                        var searchs = db.Users.SingleOrDefault(o => o.UserID == usrId);
+                        AddFavouriteOrHated(-1, searchs.Username, FileName);
+                    }
+                //Jezeli nie dasz sobie rady ze stworzeniem query: stworz funckje foreach i sprawdz czy dany film ma konkretny usrname i filmid
 
             }
             catch (DbEntityValidationException e)
@@ -265,7 +269,9 @@ namespace Movie_Catalog
 
                 var usr = db.Users.SingleOrDefault(o => o.Username == UserName);
 
-                var search = db.Favourite_Hated.SingleOrDefault(o => o.FilmID == result.ID);
+                int ID = usr.UserID;
+
+                var search = db.Favourite_Hated.SingleOrDefault(o => o.FilmID == result.ID && o.UserID == ID);
 
                 if (search == null)
                 {
