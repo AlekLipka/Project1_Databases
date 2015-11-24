@@ -172,6 +172,8 @@ namespace Movie_Catalog
                 monoFlat_Panel1.Visible = false;
                 monoFlat_LinkLabel2.Visible = true;
                 ContextMenuAvailable = true;
+                Playlist_Button.Visible = true;
+                HomeList_Button.Visible = true;
 
                 welcome.Text = ("Welcome " + login);
                 welcome.Location = new System.Drawing.Point(this.Width - welcome.Width - monoFlat_LinkLabel2.Width - welcome.Margin.Left
@@ -276,6 +278,8 @@ namespace Movie_Catalog
             monoFlat_Button1.Visible = true;
             monoFlat_Panel1.Visible = true;
             monoFlat_LinkLabel2.Visible = false;
+            Playlist_Button.Visible = false;
+            HomeList_Button.Visible = false;
 
             welcome.Text = null;
             welcome.Visible = false;
@@ -298,7 +302,27 @@ namespace Movie_Catalog
 
         #endregion
 
+        #region Playlist and Home list
+        bool playlistButtonPressed = false;
+        bool homelistButtonPressed = true;
+
+        private void Playlist_Button_Click(object sender, EventArgs e)
+        {
+            RefreshPlaylistGrid();
+            playlistButtonPressed = true;
+            homelistButtonPressed = false;
+        }
+
+        private void HomeList_Button_Click(object sender, EventArgs e)
+        {
+            RefreshGrid();
+            playlistButtonPressed = false;
+            homelistButtonPressed = true;
+        }
+        #endregion
+
         #region DataGridView
+        
         /// <summary>
         /// Editing of a Movie Name in the dataGridView, it saves the input in database
         /// </summary>
@@ -320,8 +344,9 @@ namespace Movie_Catalog
                 }
             }));
         }
+        
         /// <summary>
-        /// Refreshes the dataGridView from database
+        /// Refreshes the dataGridView from database that are in Home list
         /// </summary>
         private void RefreshGrid()
         {
@@ -329,6 +354,39 @@ namespace Movie_Catalog
 
             movieList = Methods.AddItemToList();
 
+            dataGridView1.DataSource = movieList;
+
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            dataGridView1.Columns[0].Width = 80;
+            dataGridView1.Columns[3].Width = 110;
+            dataGridView1.Columns[2].ReadOnly = true;
+            int count = 0;
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (count % 2 == 0)
+                {
+                    row.DefaultCellStyle.BackColor = Color.White;
+                }
+                else
+                {
+                    row.DefaultCellStyle.BackColor = Color.LightGray;
+                    //row.DefaultCellStyle.ForeColor = System.Drawing.Color.White;
+                }
+
+                count++;
+            }
+        }
+
+        /// <summary>
+        /// Refreshes dataGridView with films that are added to Playlist
+        /// </summary>
+        private void RefreshPlaylistGrid()
+        {
+            List<Movies> movieList = new List<Movies>();
+
+            movieList = Methods.AddItemToPlaylist();
+            dataGridView1.DataSource = null;
             dataGridView1.DataSource = movieList;
 
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -365,18 +423,31 @@ namespace Movie_Catalog
 
             if (e.Button == MouseButtons.Right)
             {
-
                 int currentMouseOverRow = dataGridView1.HitTest(e.X, e.Y).RowIndex;
                 int currentMouseOverColumn = dataGridView1.HitTest(e.X, e.Y).ColumnIndex;
+                var film = ((List<Movies>)dataGridView1.DataSource).ElementAt(currentMouseOverRow);
+                var userID = getCurrentUserID();
                 if (currentMouseOverRow >= 0 && currentMouseOverColumn >= 0)
                     dataGridView1.CurrentCell = dataGridView1[currentMouseOverColumn, currentMouseOverRow];
                 if (ContextMenuAvailable)
                 {
+                    MovieDatabaseEntities db = new MovieDatabaseEntities();
                     ContextMenuStrip m = new ContextMenuStrip();
-                    m.Items.Add("Add to Favourite").Name = "Add to Favourite";
-                    m.Items.Add("Add to Hated").Name = "Add to Hated";
+                    if(film.LikeOrDislike != "Favourite")
+                        m.Items.Add("Add to Favourite").Name = "Add to Favourite";
+                    if(film.LikeOrDislike != "Hated")
+                        m.Items.Add("Add to Hated").Name = "Add to Hated";
+                    if(film.LikeOrDislike == "Favourite" || film.LikeOrDislike == "Hated")
                     m.Items.Add("Reset to Normal Status").Name = "Reset to Normal Status";
-
+                    if (db.Playlists.Any(p => p.FilmID == film.MovieID && p.UserID == userID))
+                    {
+                        m.Items.Add("Remove from playlist").Name = "Remove from playlist";
+                    }
+                    else
+                    {
+                        m.Items.Add("Add to playlist").Name = "Add to playlist";
+                    }
+                    
 
                     Point pt1 = new Point(currentMouseOverColumn, currentMouseOverRow);
                     pt = pt1;
@@ -409,15 +480,26 @@ namespace Movie_Catalog
                 case "Reset to Normal Status":
                     Methods.AddFavouriteOrHated(-1, UserName, film.File_Name);
                     break;
+                case "Add to playlist":
+                    Methods.AddToPlaylist(1, UserName, film.File_Name);
+                    break;
+                case "Remove from playlist":
+                    Methods.RemoveFromPlaylist(film);
+                    break;
+
             }
-            RefreshGrid();
+            if (playlistButtonPressed)
+                RefreshPlaylistGrid();
+            else if(homelistButtonPressed)
+                RefreshGrid();
         }
         #endregion
 
         #region Playing the movies
 
         /// <summary>
-        /// Checks if the file exists in the directory from database and play a movie if it exists or calls changeDirectory if it does not.
+        /// Checks if the file exists in the directory from database and play a movie if it exists 
+        /// or calls changeDirectory if it does not.
         /// </summary>
         private void dataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -482,7 +564,7 @@ namespace Movie_Catalog
         }
 
         /// <summary>
-        /// Removes the movie from database
+        /// Removes the movie from database if its directory was changed and user does not want to give a new one
         /// </summary>
         /// <param name="file_name">The name of file to be deleted</param>
         public void DeleteOldRowFromDatabase(string file_name)
@@ -525,7 +607,8 @@ namespace Movie_Catalog
         }
 
         /// <summary>
-        /// Function that uses DeleteOldRowFromDatabase and AddNewPathToDatabase functions to update the path of the file or to remove movie from database
+        /// Function that uses DeleteOldRowFromDatabase and AddNewPathToDatabase functions to update the path of the file 
+        /// or to remove movie from database
         /// </summary>
         /// <param name="file_name">A name of movie file that will be updated/removed</param>
         /// <param name="path">An old path to the file. It is needed to MessageBox information</param>
@@ -599,6 +682,5 @@ namespace Movie_Catalog
         }
         
         #endregion
-
     }
 }

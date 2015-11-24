@@ -30,6 +30,7 @@ namespace Movie_Catalog
         public virtual DbSet<Favourite_Hated> Favourite_Hated { get; set; }
         public virtual DbSet<MainMovieList> MainMovieLists { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Playlist> Playlists { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

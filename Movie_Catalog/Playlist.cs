@@ -12,19 +12,13 @@ namespace Movie_Catalog
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Playlist
     {
-        public User()
-        {
-            this.Favourite_Hated = new HashSet<Favourite_Hated>();
-            this.Playlists = new HashSet<Playlist>();
-        }
-    
         public int UserID { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public int FilmID { get; set; }
+        public int IsOnPlaylist { get; set; }
     
-        public virtual ICollection<Favourite_Hated> Favourite_Hated { get; set; }
-        public virtual ICollection<Playlist> Playlists { get; set; }
+        public virtual MainMovieList MainMovieList { get; set; }
+        public virtual User User { get; set; }
     }
 }

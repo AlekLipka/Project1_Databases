@@ -17,6 +17,7 @@ namespace Movie_Catalog
         public MainMovieList()
         {
             this.Favourite_Hated = new HashSet<Favourite_Hated>();
+            this.Playlists = new HashSet<Playlist>();
         }
     
         public int ID { get; set; }
@@ -25,5 +26,6 @@ namespace Movie_Catalog
         public string File_Path { get; set; }
     
         public virtual ICollection<Favourite_Hated> Favourite_Hated { get; set; }
+        public virtual ICollection<Playlist> Playlists { get; set; }
     }
 }

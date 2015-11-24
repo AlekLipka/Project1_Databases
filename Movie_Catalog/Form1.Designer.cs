@@ -31,6 +31,8 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.monoFlat_ThemeContainer1 = new MonoFlat.MonoFlat_ThemeContainer();
+            this.Playlist_Button = new MonoFlat.MonoFlat_Button();
+            this.HomeList_Button = new MonoFlat.MonoFlat_Button();
             this.welcome = new MonoFlat.MonoFlat_Label();
             this.monoFlat_LinkLabel2 = new MonoFlat.MonoFlat_LinkLabel();
             this.monoFlat_Label2 = new MonoFlat.MonoFlat_Label();
@@ -62,6 +64,8 @@
             // monoFlat_ThemeContainer1
             // 
             this.monoFlat_ThemeContainer1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(41)))), ((int)(((byte)(50)))));
+            this.monoFlat_ThemeContainer1.Controls.Add(this.Playlist_Button);
+            this.monoFlat_ThemeContainer1.Controls.Add(this.HomeList_Button);
             this.monoFlat_ThemeContainer1.Controls.Add(this.welcome);
             this.monoFlat_ThemeContainer1.Controls.Add(this.monoFlat_LinkLabel2);
             this.monoFlat_ThemeContainer1.Controls.Add(this.monoFlat_Label2);
@@ -76,15 +80,46 @@
             this.monoFlat_ThemeContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.monoFlat_ThemeContainer1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.monoFlat_ThemeContainer1.Location = new System.Drawing.Point(0, 0);
+            this.monoFlat_ThemeContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.monoFlat_ThemeContainer1.Name = "monoFlat_ThemeContainer1";
-            this.monoFlat_ThemeContainer1.Padding = new System.Windows.Forms.Padding(10, 70, 10, 9);
+            this.monoFlat_ThemeContainer1.Padding = new System.Windows.Forms.Padding(8, 57, 8, 7);
             this.monoFlat_ThemeContainer1.RoundCorners = true;
             this.monoFlat_ThemeContainer1.Sizable = true;
-            this.monoFlat_ThemeContainer1.Size = new System.Drawing.Size(1282, 853);
+            this.monoFlat_ThemeContainer1.Size = new System.Drawing.Size(962, 693);
             this.monoFlat_ThemeContainer1.SmartBounds = true;
             this.monoFlat_ThemeContainer1.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultLocation;
             this.monoFlat_ThemeContainer1.TabIndex = 0;
             this.monoFlat_ThemeContainer1.Text = "Movie Catalog";
+            // 
+            // Playlist_Button
+            // 
+            this.Playlist_Button.BackColor = System.Drawing.Color.Transparent;
+            this.Playlist_Button.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.Playlist_Button.Image = null;
+            this.Playlist_Button.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Playlist_Button.Location = new System.Drawing.Point(107, 140);
+            this.Playlist_Button.Name = "Playlist_Button";
+            this.Playlist_Button.Size = new System.Drawing.Size(89, 19);
+            this.Playlist_Button.TabIndex = 15;
+            this.Playlist_Button.Text = "Playlist";
+            this.Playlist_Button.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.Playlist_Button.Visible = false;
+            this.Playlist_Button.Click += new System.EventHandler(this.Playlist_Button_Click);
+            // 
+            // HomeList_Button
+            // 
+            this.HomeList_Button.BackColor = System.Drawing.Color.Transparent;
+            this.HomeList_Button.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.HomeList_Button.Image = null;
+            this.HomeList_Button.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.HomeList_Button.Location = new System.Drawing.Point(12, 140);
+            this.HomeList_Button.Name = "HomeList_Button";
+            this.HomeList_Button.Size = new System.Drawing.Size(89, 19);
+            this.HomeList_Button.TabIndex = 14;
+            this.HomeList_Button.Text = "Home";
+            this.HomeList_Button.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.HomeList_Button.Visible = false;
+            this.HomeList_Button.Click += new System.EventHandler(this.HomeList_Button_Click);
             // 
             // welcome
             // 
@@ -93,9 +128,10 @@
             this.welcome.BackColor = System.Drawing.Color.Transparent;
             this.welcome.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.welcome.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(116)))), ((int)(((byte)(125)))), ((int)(((byte)(132)))));
-            this.welcome.Location = new System.Drawing.Point(1034, 130);
+            this.welcome.Location = new System.Drawing.Point(776, 106);
+            this.welcome.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.welcome.Name = "welcome";
-            this.welcome.Size = new System.Drawing.Size(0, 20);
+            this.welcome.Size = new System.Drawing.Size(0, 15);
             this.welcome.TabIndex = 13;
             this.welcome.Visible = false;
             // 
@@ -108,10 +144,10 @@
             this.monoFlat_LinkLabel2.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.monoFlat_LinkLabel2.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.monoFlat_LinkLabel2.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(41)))), ((int)(((byte)(42)))));
-            this.monoFlat_LinkLabel2.Location = new System.Drawing.Point(1202, 130);
-            this.monoFlat_LinkLabel2.Margin = new System.Windows.Forms.Padding(5, 0, 3, 0);
+            this.monoFlat_LinkLabel2.Location = new System.Drawing.Point(902, 106);
+            this.monoFlat_LinkLabel2.Margin = new System.Windows.Forms.Padding(4, 0, 2, 0);
             this.monoFlat_LinkLabel2.Name = "monoFlat_LinkLabel2";
-            this.monoFlat_LinkLabel2.Size = new System.Drawing.Size(62, 20);
+            this.monoFlat_LinkLabel2.Size = new System.Drawing.Size(50, 15);
             this.monoFlat_LinkLabel2.TabIndex = 12;
             this.monoFlat_LinkLabel2.TabStop = true;
             this.monoFlat_LinkLabel2.Text = "Log Out";
@@ -126,9 +162,10 @@
             this.monoFlat_Label2.BackColor = System.Drawing.Color.Transparent;
             this.monoFlat_Label2.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.monoFlat_Label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(116)))), ((int)(((byte)(125)))), ((int)(((byte)(132)))));
-            this.monoFlat_Label2.Location = new System.Drawing.Point(864, 113);
+            this.monoFlat_Label2.Location = new System.Drawing.Point(648, 92);
+            this.monoFlat_Label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.monoFlat_Label2.Name = "monoFlat_Label2";
-            this.monoFlat_Label2.Size = new System.Drawing.Size(74, 20);
+            this.monoFlat_Label2.Size = new System.Drawing.Size(60, 15);
             this.monoFlat_Label2.TabIndex = 6;
             this.monoFlat_Label2.Text = "Password:";
             // 
@@ -139,9 +176,10 @@
             this.monoFlat_Label1.BackColor = System.Drawing.Color.Transparent;
             this.monoFlat_Label1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.monoFlat_Label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(116)))), ((int)(((byte)(125)))), ((int)(((byte)(132)))));
-            this.monoFlat_Label1.Location = new System.Drawing.Point(593, 113);
+            this.monoFlat_Label1.Location = new System.Drawing.Point(445, 92);
+            this.monoFlat_Label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.monoFlat_Label1.Name = "monoFlat_Label1";
-            this.monoFlat_Label1.Size = new System.Drawing.Size(49, 20);
+            this.monoFlat_Label1.Size = new System.Drawing.Size(40, 15);
             this.monoFlat_Label1.TabIndex = 5;
             this.monoFlat_Label1.Text = "Login:";
             // 
@@ -152,9 +190,10 @@
             this.monoFlat_Button1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.monoFlat_Button1.Image = null;
             this.monoFlat_Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.monoFlat_Button1.Location = new System.Drawing.Point(1168, 101);
+            this.monoFlat_Button1.Location = new System.Drawing.Point(876, 82);
+            this.monoFlat_Button1.Margin = new System.Windows.Forms.Padding(2);
             this.monoFlat_Button1.Name = "monoFlat_Button1";
-            this.monoFlat_Button1.Size = new System.Drawing.Size(104, 46);
+            this.monoFlat_Button1.Size = new System.Drawing.Size(78, 37);
             this.monoFlat_Button1.TabIndex = 4;
             this.monoFlat_Button1.Text = "Log In";
             this.monoFlat_Button1.TextAlignment = System.Drawing.StringAlignment.Center;
@@ -167,12 +206,13 @@
             this.monoFlat_TextBox2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.monoFlat_TextBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(176)))), ((int)(((byte)(183)))), ((int)(((byte)(191)))));
             this.monoFlat_TextBox2.Image = null;
-            this.monoFlat_TextBox2.Location = new System.Drawing.Point(944, 101);
+            this.monoFlat_TextBox2.Location = new System.Drawing.Point(708, 82);
+            this.monoFlat_TextBox2.Margin = new System.Windows.Forms.Padding(2);
             this.monoFlat_TextBox2.MaxLength = 20;
             this.monoFlat_TextBox2.Multiline = false;
             this.monoFlat_TextBox2.Name = "monoFlat_TextBox2";
             this.monoFlat_TextBox2.ReadOnly = false;
-            this.monoFlat_TextBox2.Size = new System.Drawing.Size(218, 42);
+            this.monoFlat_TextBox2.Size = new System.Drawing.Size(164, 38);
             this.monoFlat_TextBox2.TabIndex = 3;
             this.monoFlat_TextBox2.Text = "Password";
             this.monoFlat_TextBox2.TextAlignment = System.Windows.Forms.HorizontalAlignment.Left;
@@ -186,12 +226,13 @@
             this.monoFlat_TextBox1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.monoFlat_TextBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(176)))), ((int)(((byte)(183)))), ((int)(((byte)(191)))));
             this.monoFlat_TextBox1.Image = null;
-            this.monoFlat_TextBox1.Location = new System.Drawing.Point(648, 101);
+            this.monoFlat_TextBox1.Location = new System.Drawing.Point(486, 82);
+            this.monoFlat_TextBox1.Margin = new System.Windows.Forms.Padding(2);
             this.monoFlat_TextBox1.MaxLength = 20;
             this.monoFlat_TextBox1.Multiline = false;
             this.monoFlat_TextBox1.Name = "monoFlat_TextBox1";
             this.monoFlat_TextBox1.ReadOnly = false;
-            this.monoFlat_TextBox1.Size = new System.Drawing.Size(210, 42);
+            this.monoFlat_TextBox1.Size = new System.Drawing.Size(158, 38);
             this.monoFlat_TextBox1.TabIndex = 2;
             this.monoFlat_TextBox1.TextAlignment = System.Windows.Forms.HorizontalAlignment.Left;
             this.monoFlat_TextBox1.UseSystemPasswordChar = false;
@@ -203,7 +244,8 @@
             this.monoFlat_ControlBox1.EnableHoverHighlight = false;
             this.monoFlat_ControlBox1.EnableMaximizeButton = true;
             this.monoFlat_ControlBox1.EnableMinimizeButton = true;
-            this.monoFlat_ControlBox1.Location = new System.Drawing.Point(1170, 15);
+            this.monoFlat_ControlBox1.Location = new System.Drawing.Point(850, 15);
+            this.monoFlat_ControlBox1.Margin = new System.Windows.Forms.Padding(2);
             this.monoFlat_ControlBox1.Name = "monoFlat_ControlBox1";
             this.monoFlat_ControlBox1.Size = new System.Drawing.Size(100, 25);
             this.monoFlat_ControlBox1.TabIndex = 0;
@@ -216,9 +258,10 @@
             this.fileToolStripMenuItem,
             this.optionsToolStripMenuItem,
             this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(10, 70);
+            this.menuStrip1.Location = new System.Drawing.Point(8, 57);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1262, 28);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(946, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -229,7 +272,7 @@
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(44, 24);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openToolStripMenuItem
@@ -238,14 +281,14 @@
             this.fileToolStripMenuItem1,
             this.folderToolStripMenuItem});
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(106, 24);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.openToolStripMenuItem.Text = "Add";
             // 
             // fileToolStripMenuItem1
             // 
             this.fileToolStripMenuItem1.Enabled = false;
             this.fileToolStripMenuItem1.Name = "fileToolStripMenuItem1";
-            this.fileToolStripMenuItem1.Size = new System.Drawing.Size(120, 24);
+            this.fileToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
             this.fileToolStripMenuItem1.Text = "File";
             this.fileToolStripMenuItem1.Click += new System.EventHandler(this.fileToolStripMenuItem1_Click);
             // 
@@ -253,26 +296,26 @@
             // 
             this.folderToolStripMenuItem.Enabled = false;
             this.folderToolStripMenuItem.Name = "folderToolStripMenuItem";
-            this.folderToolStripMenuItem.Size = new System.Drawing.Size(120, 24);
+            this.folderToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.folderToolStripMenuItem.Text = "Folder";
             this.folderToolStripMenuItem.Click += new System.EventHandler(this.folderToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(103, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(93, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(106, 24);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(73, 24);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
@@ -281,13 +324,13 @@
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(119, 24);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -297,11 +340,12 @@
             this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(10, 202);
-            this.dataGridView1.MinimumSize = new System.Drawing.Size(1262, 642);
+            this.dataGridView1.Location = new System.Drawing.Point(8, 164);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridView1.MinimumSize = new System.Drawing.Size(946, 522);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(1262, 642);
+            this.dataGridView1.Size = new System.Drawing.Size(946, 522);
             this.dataGridView1.TabIndex = 8;
             this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellEndEdit);
             this.dataGridView1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseClick);
@@ -313,10 +357,11 @@
             this.monoFlat_Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(51)))), ((int)(((byte)(63)))));
             this.monoFlat_Panel1.Controls.Add(this.monoFlat_LinkLabel1);
             this.monoFlat_Panel1.Controls.Add(this.monoFlat_Label3);
-            this.monoFlat_Panel1.Location = new System.Drawing.Point(1186, 153);
+            this.monoFlat_Panel1.Location = new System.Drawing.Point(890, 124);
+            this.monoFlat_Panel1.Margin = new System.Windows.Forms.Padding(2);
             this.monoFlat_Panel1.Name = "monoFlat_Panel1";
-            this.monoFlat_Panel1.Padding = new System.Windows.Forms.Padding(5);
-            this.monoFlat_Panel1.Size = new System.Drawing.Size(86, 30);
+            this.monoFlat_Panel1.Padding = new System.Windows.Forms.Padding(4);
+            this.monoFlat_Panel1.Size = new System.Drawing.Size(64, 24);
             this.monoFlat_Panel1.TabIndex = 11;
             this.monoFlat_Panel1.Text = "monoFlat_Panel1";
             // 
@@ -328,9 +373,10 @@
             this.monoFlat_LinkLabel1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.monoFlat_LinkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.monoFlat_LinkLabel1.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(41)))), ((int)(((byte)(42)))));
-            this.monoFlat_LinkLabel1.Location = new System.Drawing.Point(25, 5);
+            this.monoFlat_LinkLabel1.Location = new System.Drawing.Point(19, 4);
+            this.monoFlat_LinkLabel1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.monoFlat_LinkLabel1.Name = "monoFlat_LinkLabel1";
-            this.monoFlat_LinkLabel1.Size = new System.Drawing.Size(61, 20);
+            this.monoFlat_LinkLabel1.Size = new System.Drawing.Size(48, 15);
             this.monoFlat_LinkLabel1.TabIndex = 9;
             this.monoFlat_LinkLabel1.TabStop = true;
             this.monoFlat_LinkLabel1.Text = "Sign Up";
@@ -343,22 +389,24 @@
             this.monoFlat_Label3.BackColor = System.Drawing.Color.Transparent;
             this.monoFlat_Label3.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.monoFlat_Label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(116)))), ((int)(((byte)(125)))), ((int)(((byte)(132)))));
-            this.monoFlat_Label3.Location = new System.Drawing.Point(1, 5);
+            this.monoFlat_Label3.Location = new System.Drawing.Point(1, 4);
+            this.monoFlat_Label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.monoFlat_Label3.Name = "monoFlat_Label3";
-            this.monoFlat_Label3.Size = new System.Drawing.Size(23, 20);
+            this.monoFlat_Label3.Size = new System.Drawing.Size(18, 15);
             this.monoFlat_Label3.TabIndex = 10;
             this.monoFlat_Label3.Text = "or";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1282, 853);
+            this.ClientSize = new System.Drawing.Size(962, 693);
             this.Controls.Add(this.monoFlat_ThemeContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(1282, 853);
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.MinimumSize = new System.Drawing.Size(962, 693);
             this.Name = "Form1";
             this.Text = "Movie Catalog";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
@@ -398,6 +446,8 @@
         private MonoFlat.MonoFlat_Label monoFlat_Label3;
         private MonoFlat.MonoFlat_LinkLabel monoFlat_LinkLabel2;
         private MonoFlat.MonoFlat_Label welcome;
+        private MonoFlat.MonoFlat_Button Playlist_Button;
+        private MonoFlat.MonoFlat_Button HomeList_Button;
     }
 }
 

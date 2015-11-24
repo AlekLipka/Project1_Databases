@@ -56,11 +56,11 @@ namespace Movie_Catalog
                 {
                     if ((myStream = open.OpenFile()) != null)
                     {
-                        using(myStream)
+                        using (myStream)
                         {
                             //string Name;
                             FileStream fs = myStream as FileStream;
-                            
+
                             if (fs != null)
                             {
                                 Properties.Settings.Default.FolderFilePath = fs.Name;
@@ -75,7 +75,7 @@ namespace Movie_Catalog
                 {
                     MessageBox.Show("Error: Could not find file. Error: " + ex.Message);
                 }
-            }
+            } 
         }
         /// <summary>
         /// Opens Folder Browser and returns the path of selected folder
@@ -88,9 +88,17 @@ namespace Movie_Catalog
                 fbd.SelectedPath = Properties.Settings.Default.FolderPath;
 
             if (fbd.ShowDialog() == DialogResult.OK){
-                Properties.Settings.Default.FolderPath = fbd.SelectedPath;
-                Properties.Settings.Default.Save();
-                return fbd.SelectedPath;
+                if (fbd.SelectedPath != null)
+                {
+                    Properties.Settings.Default.FolderPath = fbd.SelectedPath;
+                    Properties.Settings.Default.Save();
+                    return fbd.SelectedPath;
+                }
+                else
+                {
+                    MessageBox.Show("Error! Can not find such directory. It could be removed od its location could be changed", "Error!");
+                    return null;
+                }
             }
             else
                 return null;
@@ -223,6 +231,33 @@ namespace Movie_Catalog
         }
 
         /// <summary>
+        /// Set information to be displayed in dataGridView1 after clicking "Playlist" button
+        /// </summary>
+        /// <returns>Return list of movies to add to dataGridView1</returns>
+        public static List<Movies> AddItemToPlaylist()
+        {
+            int UserID = Form1.getCurrentUserID();
+
+            MovieDatabaseEntities db = new MovieDatabaseEntities();
+
+            var movieQuery = from fh in db.Favourite_Hated
+                             join p in db.Playlists on new { ID = fh.FilmID } equals new { ID = p.FilmID }
+                             where (p.UserID == fh.UserID && p.UserID == UserID)
+                             select new Movies
+                             {
+                                 MovieID = (int)fh.MainMovieList.ID,
+                                 Movie_Name = fh.MainMovieList.Movie_Name,
+                                 File_Name = fh.MainMovieList.File_Name,
+                                 LikeOrDislike = fh.LikeOrDislike == 1 ? "Favourite" : (fh.LikeOrDislike == 0 ? "Hated" : ""),
+                                 Path = fh.MainMovieList.File_Path
+                             };
+
+           List<Movies> movieList = movieQuery.ToList();
+
+           return movieList;
+        }
+
+        /// <summary>
         /// Allows to change name of film if we click on proper column in dataGridView1
         /// </summary>
         /// <param name="moviename">Movie name we want to check for.</param>
@@ -258,7 +293,7 @@ namespace Movie_Catalog
         /// Adds information if movie is added to favourites, hated or none of them
         /// </summary>
         /// <param name="whichcase">Determines if movie is added to favourites or hated</param>
-        /// <param name="UserName">The name of the user that we are login in</param>
+        /// <param name="UserName">The name of the user that is log in</param>
         /// <param name="film">The name of file that we want to set</param>
         public static void AddFavouriteOrHated(int whichcase, string UserName, string film)
         {
@@ -306,6 +341,81 @@ namespace Movie_Catalog
                 throw;
             }
         }
+
+        /// <summary>
+        /// Adds information if movie is added to playlist
+        /// </summary>
+        /// <param name="whichcase">Determines if movie is added to playlist</param>
+        /// <param name="UserName">The name of the user that is log in</param>
+        /// <param name="film">The name of file that we want to set</param>
+        public static void AddToPlaylist(int whichcase, string UserName, string film)
+        {
+            try
+            {
+                MovieDatabaseEntities db = new MovieDatabaseEntities();
+
+                var movie = db.MainMovieLists.SingleOrDefault(o => o.File_Name == film);
+
+                var usr = db.Users.SingleOrDefault(o => o.Username == UserName);
+
+                int usrID = usr.UserID;
+
+                var search = db.Playlists.SingleOrDefault(o => o.FilmID == movie.ID && o.UserID == usrID);
+
+                if (search == null)
+                {
+                    Playlist playlist = new Playlist();
+
+                    playlist.FilmID = movie.ID;
+                    playlist.UserID = usr.UserID;
+                    playlist.IsOnPlaylist = whichcase;
+
+                    db.Playlists.Add(playlist);
+                    db.SaveChanges();
+                }
+                else if (search.IsOnPlaylist != whichcase)
+                {
+                    search.IsOnPlaylist = whichcase;
+                    db.SaveChanges();
+                }
+            }
+            catch (DbEntityValidationException e)
+            { //In case of error while adding stuff to database
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                throw;
+            }
+        }
         #endregion
+
+        /// <summary>
+        /// Removes record from Playlist in db with specified userID and filmID
+        /// </summary>
+        /// <param name="film">film that has to be removed from Playlist for current user</param>
+        public static void RemoveFromPlaylist(Movies film)
+        {
+            var userID = Form1.getCurrentUserID();
+            MovieDatabaseEntities db = new MovieDatabaseEntities();
+            
+            var queryPlaylist = from Playlist in db.Playlists
+                                where Playlist.UserID == userID && 
+                                Playlist.FilmID == film.MovieID
+                                select Playlist;
+
+            foreach (var del in queryPlaylist)
+            {
+                db.Playlists.Remove(del);
+            }
+            db.SaveChanges();
+
+        }
     }
 }
