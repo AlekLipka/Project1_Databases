@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
+using System.IO;
+using System.Data.Entity.Validation;
 
 namespace Movie_Catalog
 {
@@ -118,11 +121,11 @@ namespace Movie_Catalog
             {
                 List<String> NewMoviesFromDirecotry = new List<String>();
                 NewMoviesFromDirecotry = Methods.GetAllFilesToList(directory);
-                string name;
+                string path;
                 foreach (var element in NewMoviesFromDirecotry)
                 {
-                    name = System.IO.Path.GetFileNameWithoutExtension(element);
-                    Methods.AddMovie(name);
+                    path = System.IO.Path.GetFullPath(element);
+                    Methods.AddMovie(path);
                 }
                 RefreshGrid();
             }
@@ -328,10 +331,6 @@ namespace Movie_Catalog
 
             dataGridView1.DataSource = movieList;
 
-            //dataGridView1.Columns[0].Name = "ID";
-            //dataGridView1.Columns[1].Name = "Movie Name";
-            //dataGridView1.Columns[2].Name = "File Name";
-            //dataGridView1.Columns[3].Name = "Good(1) or Not(0)";
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             dataGridView1.Columns[0].Width = 80;
@@ -413,6 +412,192 @@ namespace Movie_Catalog
             }
             RefreshGrid();
         }
+        #endregion
+
+        #region Playing the movies
+
+        /// <summary>
+        /// Checks if the file exists in the directory from database and play a movie if it exists or calls changeDirectory if it does not.
+        /// </summary>
+        private void dataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                int currentMouseOverRow = dataGridView1.HitTest(e.X, e.Y).RowIndex;
+                int currentMouseOverColumn = dataGridView1.HitTest(e.X, e.Y).ColumnIndex;
+
+                if (currentMouseOverRow >= 0 && currentMouseOverColumn >= 0)
+                {
+                    dataGridView1.CurrentCell = dataGridView1[currentMouseOverColumn, currentMouseOverRow];
+
+                    var film = ((List<Movies>)dataGridView1.DataSource).ElementAt(currentMouseOverRow);
+                    var path = film.Path;
+                    var file_name = film.File_Name;
+                    if (File.Exists(path))
+                    {
+                        try
+                        {
+                            Process.Start(path);
+                        }
+                        catch { }
+                    }
+                    else
+                    {
+                       ChangeDirectory(file_name, path);
+                       RefreshGrid();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add new path to the file whose directory was changed, to database 
+        /// </summary>
+        /// <param name="newPath">a path that is inserted instead of previous one</param>
+        /// <param name="file_name">a name of file that will be updated</param>
+        public void AddNewPathToDatabase(string newPath, string file_name)
+        {
+            try
+            {
+                MovieDatabaseEntities db = new MovieDatabaseEntities();
+                var result = db.MainMovieLists.SingleOrDefault(o => o.File_Name == file_name);
+
+                result.File_Path = newPath;
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            { //In case of error while adding stuff to database
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Removes the movie from database
+        /// </summary>
+        /// <param name="file_name">The name of file to be deleted</param>
+        public void DeleteOldRowFromDatabase(string file_name)
+        {
+            MovieDatabaseEntities db = new MovieDatabaseEntities();
+            var FilmID =
+            (from mov in db.MainMovieLists
+            where mov.File_Name == file_name
+            select mov.ID).FirstOrDefault();
+
+            var DeletedFromFavourite_Hated =
+                from fav in db.Favourite_Hated
+                where fav.FilmID == FilmID
+                select fav;
+
+            var DeletedFromMainMovieLists =
+                from mov in db.MainMovieLists
+                where mov.ID == FilmID
+                select mov;
+
+            foreach (var pair in DeletedFromFavourite_Hated)
+            {
+                db.Favourite_Hated.Remove(pair);
+            }
+
+            foreach(var mov in DeletedFromMainMovieLists)
+            {
+                db.MainMovieLists.Remove(mov);
+            }
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                // Provide for exceptions.
+            }
+        }
+
+        /// <summary>
+        /// Function that uses DeleteOldRowFromDatabase and AddNewPathToDatabase functions to update the path of the file or to remove movie from database
+        /// </summary>
+        /// <param name="file_name">A name of movie file that will be updated/removed</param>
+        /// <param name="path">An old path to the file. It is needed to MessageBox information</param>
+        public void ChangeDirectory(string file_name, string path)
+        {
+             var i = 0;
+
+             while (i == 0)
+             {
+
+                 Form2 MyMessageBox = new Form2();
+                 MyMessageBox.MessageBox_File_Name.Text = "'" + file_name + "'";
+                 MyMessageBox.MessageBox_File_Path.Text = "'" + path + "'";
+
+
+
+                 if (MyMessageBox.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                 {
+
+                     Stream myStream = null;
+                     OpenFileDialog open = new OpenFileDialog();
+                     open.Filter = "Movie file (*.mkv, *.mov, *.avi, *.mp4, *.divx, *.mpeg, *.mpg)|*.mkv;*mov;*.avi;*.mp4;*.divx;*.mpeg;*.mpg";
+
+                     if (Properties.Settings.Default.FolderPath != null)
+                     {
+                         open.InitialDirectory = Properties.Settings.Default.FolderFilePath;
+                     }
+
+                     if (open.ShowDialog() == DialogResult.OK)
+                     {
+                         try
+                         {
+                             if ((myStream = open.OpenFile()) != null)
+                             {
+                                 using (myStream)
+                                 {
+                                     //string Name;
+                                     FileStream fs = myStream as FileStream;
+
+                                     if (fs != null)
+                                     {
+                                         Properties.Settings.Default.FolderFilePath = fs.Name;
+                                         Properties.Settings.Default.Save();
+                                         Name = System.IO.Path.GetFileNameWithoutExtension(fs.Name);
+                                         if (Name == file_name)
+                                         {
+                                             i = 1;
+                                             AddNewPathToDatabase(fs.Name, Name);
+                                         }
+                                         else
+                                         {
+                                             MessageBox.Show("You chose wrong file! \n \n Try again!");
+                                             i = 0;
+                                         }
+                                     }
+                                 }
+                             }
+                         }
+                         catch (Exception ex)
+                         {
+                             MessageBox.Show("Error: Could not find file. Error: " + ex.Message);
+                         }
+                     }
+                 }
+                 else
+                 {
+                     i = 1;
+                     DeleteOldRowFromDatabase(file_name);
+                 }
+             }
+        }
+        
         #endregion
 
     }

@@ -40,7 +40,7 @@ namespace Movie_Catalog
         /// opens AddMovie() function with a filename parameter
         /// </summary>
         public static void LoadFile()
-        { //Function that takes a file, then file name and add then call a function AddMovie
+        { //Function that takes a file, then file path and add then call a function AddMovie
             Stream myStream = null;
             OpenFileDialog open = new OpenFileDialog();
             open.Filter = "Movie file (*.mkv, *.mov, *.avi, *.mp4, *.divx, *.mpeg, *.mpg)|*.mkv;*mov;*.avi;*.mp4;*.divx;*.mpeg;*.mpg";
@@ -58,15 +58,15 @@ namespace Movie_Catalog
                     {
                         using(myStream)
                         {
-                            string Name;
+                            //string Name;
                             FileStream fs = myStream as FileStream;
                             
                             if (fs != null)
                             {
                                 Properties.Settings.Default.FolderFilePath = fs.Name;
                                 Properties.Settings.Default.Save();
-                                Name = System.IO.Path.GetFileNameWithoutExtension(fs.Name);
-                                AddMovie(Name);
+                                //Name = System.IO.Path.GetFileNameWithoutExtension(fs.Name);
+                                AddMovie(fs.Name);
                             }
                         }
                     }
@@ -111,15 +111,15 @@ namespace Movie_Catalog
         /// Adds a movie to database taking into consideration all possible exceptions
         /// </summary>
         /// <param name="FileName">Name of the movie filename</param>
-        public static void AddMovie(string FileName)
-        { //Adds a movie id and movie name to database
+        public static void AddMovie(string FilePath)
+        { //Adds a movie id, movie name and movie path to database
             try
             {
-                //Properties.Settings.Default.MovieNo = 7;
-                //Properties.Settings.Default.Save();
+                string FileName = System.IO.Path.GetFileNameWithoutExtension(FilePath);
+
                 MovieDatabaseEntities db = new MovieDatabaseEntities();
                 MainMovieList objMovie = new MainMovieList();
-
+                
                 if (db.MainMovieLists.Any(o => o.File_Name == FileName))
                 {
                     Console.WriteLine(FileName + " is already in the MainMovieList table");
@@ -127,7 +127,7 @@ namespace Movie_Catalog
                 else
                 {
                     objMovie.File_Name = FileName;
-
+                    objMovie.File_Path = FilePath;
                     db.MainMovieLists.Add(objMovie);
                     db.SaveChanges();
                 }
@@ -213,7 +213,8 @@ namespace Movie_Catalog
                                  MovieID = mml.ID,
                                  Movie_Name = mml.Movie_Name,
                                  File_Name = mml.File_Name,
-                                 LikeOrDislike = fh.LikeOrDislike == 1 ? "Favourite" : (fh.LikeOrDislike == 0 ? "Hated" : "")
+                                 LikeOrDislike = fh.LikeOrDislike == 1 ? "Favourite" : (fh.LikeOrDislike == 0 ? "Hated" : ""),
+                                 Path = mml.File_Path
                              };
 
             List<Movies> movieList = movieQuery.ToList();

@@ -12,6 +12,7 @@ namespace Movie_Catalog
         public string Movie_Name { get; set; }
         public string File_Name { get; set; }
         public string LikeOrDislike { get; set; }
+        public string Path { get; set; }
 
         public Movies() { }
         public Movies(int _movieId, string _movieName, string _fileName)
