@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Movie_Catalog
 {
-    public partial class Form2 : Form
+    public partial class FilePathChangeMessageBox : Form
     {
-        public Form2()
+        public FilePathChangeMessageBox()
         {
             InitializeComponent();
         }

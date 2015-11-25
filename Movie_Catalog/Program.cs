@@ -16,7 +16,10 @@ namespace Movie_Catalog
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            MovieDatabaseEntities db = new MovieDatabaseEntities();
+            if (!db.Database.Exists())
+                Application.Run(new AddDatabaseSplashScreen());
+            Application.Run(new MainApplicationWindow());
         }
     }
 }

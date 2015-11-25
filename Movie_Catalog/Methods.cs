@@ -9,11 +9,36 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Data.Entity.Validation;
+using System.Configuration;
 
 namespace Movie_Catalog
 {
     public static class Methods
     {
+        #region AtStartup
+        /// <summary>
+        /// A method that configures the connection string to the current host in app.config every time the application is turned on.
+        /// </summary>
+        public static void ProgramStart()
+        {
+            string HostName = System.Environment.MachineName;
+
+            try{
+                System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                config.ConnectionStrings.ConnectionStrings["MovieDatabaseEntities"].ConnectionString = ("metadata=res://*/MovieDatabase.csdl|res://*/MovieDatabase.ssdl|res://*/MovieDatabase.msl;provider=System.Data.SqlClient;provider connection string=" + "\"" + ";data source=" + HostName + ";initial catalog=MovieDatabase;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework" + "\""); // " => &quot => &amp;quot
+                config.Save(ConfigurationSaveMode.Modified, true);
+
+                ConfigurationManager.RefreshSection("connectionStrings");
+
+                //Showing the output of the change in CommandWindow
+                var connectiion = ConfigurationManager.ConnectionStrings["MovieDatabaseEntities"].ConnectionString;
+                Console.WriteLine("Setting the new connectionString:\n" + connectiion + "\n");
+            }
+            catch(Exception e){
+                Console.WriteLine("Could not set database: " + e.ToString());
+            }
+        }
+        #endregion
 
         #region Exit
         /// <summary>
@@ -140,7 +165,7 @@ namespace Movie_Catalog
                     db.SaveChanges();
                 }
 
-                int usrId = Form1.getCurrentUserID();
+                int usrId = MainApplicationWindow.getCurrentUserID();
                 Console.WriteLine("Current username: " + usrId + "\n");
 
                     if (db.Favourite_Hated.Any(o => o.FilmID == objMovie.ID && o.UserID == usrId))
@@ -207,7 +232,7 @@ namespace Movie_Catalog
         /// <returns>Return list of movies to add to dataGridView1</returns>
         public static List<Movies> AddItemToList()
         {
-            int UserID = Form1.getCurrentUserID();
+            int UserID = MainApplicationWindow.getCurrentUserID();
 
             MovieDatabaseEntities db = new MovieDatabaseEntities();
 
@@ -236,7 +261,7 @@ namespace Movie_Catalog
         /// <returns>Return list of movies to add to dataGridView1</returns>
         public static List<Movies> AddItemToPlaylist()
         {
-            int UserID = Form1.getCurrentUserID();
+            int UserID = MainApplicationWindow.getCurrentUserID();
 
             MovieDatabaseEntities db = new MovieDatabaseEntities();
 
@@ -396,13 +421,14 @@ namespace Movie_Catalog
         }
         #endregion
 
+        #region Playlist
         /// <summary>
         /// Removes record from Playlist in db with specified userID and filmID
         /// </summary>
         /// <param name="film">film that has to be removed from Playlist for current user</param>
         public static void RemoveFromPlaylist(Movies film)
         {
-            var userID = Form1.getCurrentUserID();
+            var userID = MainApplicationWindow.getCurrentUserID();
             MovieDatabaseEntities db = new MovieDatabaseEntities();
             
             var queryPlaylist = from Playlist in db.Playlists
@@ -417,5 +443,6 @@ namespace Movie_Catalog
             db.SaveChanges();
 
         }
+        #endregion
     }
 }

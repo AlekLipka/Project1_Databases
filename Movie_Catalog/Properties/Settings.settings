@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Movie_Catalog.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="MovieNo" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">13</Value>
-    </Setting>
     <Setting Name="FolderPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>

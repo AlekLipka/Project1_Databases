@@ -14,14 +14,16 @@ using System.Data.Entity.Validation;
 
 namespace Movie_Catalog
 {
-    public partial class Form1 : Form
+    public partial class MainApplicationWindow : Form
     {
 
-        public Form1()
+        public MainApplicationWindow()
         {
             InitializeComponent();
             this.CenterToScreen();
+            Methods.ProgramStart();
         }
+
 
 
         #region  WindowResize
@@ -133,11 +135,12 @@ namespace Movie_Catalog
         }
         
         /// <summary>
-        /// Function that does completely nothing useful
+        /// Function that shows splash screen with database configuration string
         /// </summary>
-        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void configureDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("TROLL BUTTON");
+            AddDatabaseSplashScreen splash = new AddDatabaseSplashScreen();
+            splash.Show();
         }
         #endregion
 
@@ -250,6 +253,14 @@ namespace Movie_Catalog
 
             return usr.UserID;
         }
+        private void EnterClickOnLogIn(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                Console.WriteLine("\nEnter was clicked\n");
+                monoFlat_Button1_Click(sender, e);
+            }
+        }
 
         #endregion
 
@@ -302,7 +313,7 @@ namespace Movie_Catalog
 
         #endregion
 
-        #region Playlist and Home list
+        #region Playlist and Home List
         bool playlistButtonPressed = false;
         bool homelistButtonPressed = true;
 
@@ -361,6 +372,8 @@ namespace Movie_Catalog
             dataGridView1.Columns[0].Width = 80;
             dataGridView1.Columns[3].Width = 110;
             dataGridView1.Columns[2].ReadOnly = true;
+            dataGridView1.Columns[3].ReadOnly = true;
+            dataGridView1.Columns[4].ReadOnly = true;
             int count = 0;
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
@@ -394,6 +407,8 @@ namespace Movie_Catalog
             dataGridView1.Columns[0].Width = 80;
             dataGridView1.Columns[3].Width = 110;
             dataGridView1.Columns[2].ReadOnly = true;
+            dataGridView1.Columns[3].ReadOnly = true;
+            dataGridView1.Columns[4].ReadOnly = true;
             int count = 0;
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
@@ -413,7 +428,7 @@ namespace Movie_Catalog
 
         #endregion
 
-        #region favourite
+        #region Favourite
         Point pt = new Point();
         /// <summary>
         /// Opens Context Menu Strip while clicked in the dataGridView in column third and handles the clicks in it
@@ -508,7 +523,7 @@ namespace Movie_Catalog
                 int currentMouseOverRow = dataGridView1.HitTest(e.X, e.Y).RowIndex;
                 int currentMouseOverColumn = dataGridView1.HitTest(e.X, e.Y).ColumnIndex;
 
-                if (currentMouseOverRow >= 0 && currentMouseOverColumn >= 0)
+                if (currentMouseOverRow >= 0 && currentMouseOverColumn == 4)
                 {
                     dataGridView1.CurrentCell = dataGridView1[currentMouseOverColumn, currentMouseOverRow];
 
@@ -572,13 +587,18 @@ namespace Movie_Catalog
             MovieDatabaseEntities db = new MovieDatabaseEntities();
             var FilmID =
             (from mov in db.MainMovieLists
-            where mov.File_Name == file_name
-            select mov.ID).FirstOrDefault();
+             where mov.File_Name == file_name
+             select mov.ID).FirstOrDefault();
 
             var DeletedFromFavourite_Hated =
                 from fav in db.Favourite_Hated
                 where fav.FilmID == FilmID
                 select fav;
+
+            var DeletedFromPlaylist =
+                from pl in db.Playlists
+                where pl.FilmID == FilmID
+                select pl;
 
             var DeletedFromMainMovieLists =
                 from mov in db.MainMovieLists
@@ -590,7 +610,12 @@ namespace Movie_Catalog
                 db.Favourite_Hated.Remove(pair);
             }
 
-            foreach(var mov in DeletedFromMainMovieLists)
+            foreach (var playlist in DeletedFromPlaylist)
+            {
+                db.Playlists.Remove(playlist);
+            }
+
+            foreach (var mov in DeletedFromMainMovieLists)
             {
                 db.MainMovieLists.Remove(mov);
             }
@@ -619,7 +644,7 @@ namespace Movie_Catalog
              while (i == 0)
              {
 
-                 Form2 MyMessageBox = new Form2();
+                 FilePathChangeMessageBox MyMessageBox = new FilePathChangeMessageBox();
                  MyMessageBox.MessageBox_File_Name.Text = "'" + file_name + "'";
                  MyMessageBox.MessageBox_File_Path.Text = "'" + path + "'";
 
