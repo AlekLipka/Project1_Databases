@@ -218,7 +218,6 @@
             this.monoFlat_TextBox2.TextAlignment = System.Windows.Forms.HorizontalAlignment.Left;
             this.monoFlat_TextBox2.UseSystemPasswordChar = true;
             this.monoFlat_TextBox2.Enter += new System.EventHandler(this.TextBoxEnter);
-            this.monoFlat_TextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EnterClickOnLogIn);
             // 
             // monoFlat_TextBox1
             // 
@@ -238,7 +237,6 @@
             this.monoFlat_TextBox1.TextAlignment = System.Windows.Forms.HorizontalAlignment.Left;
             this.monoFlat_TextBox1.UseSystemPasswordChar = false;
             this.monoFlat_TextBox1.Enter += new System.EventHandler(this.TextBoxEnter);
-            this.monoFlat_TextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EnterClickOnLogIn);
             // 
             // monoFlat_ControlBox1
             // 

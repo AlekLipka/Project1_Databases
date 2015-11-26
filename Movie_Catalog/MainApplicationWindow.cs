@@ -24,8 +24,6 @@ namespace Movie_Catalog
             Methods.ProgramStart();
         }
 
-
-
         #region  WindowResize
         /// <summary>
         /// Keeps the ratio of the Form while it is resizing
@@ -140,7 +138,7 @@ namespace Movie_Catalog
         private void configureDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AddDatabaseSplashScreen splash = new AddDatabaseSplashScreen();
-            splash.Show();
+            splash.ShowDialog();
         }
         #endregion
 
@@ -184,7 +182,7 @@ namespace Movie_Catalog
                                                             - monoFlat_LinkLabel2.Margin.Right, 113);
                 welcome.Visible = true;
 
-                monoFlat_TextBox2.Text = "*****";
+                monoFlat_TextBox2.Text = "Password";
                 monoFlat_TextBox2.Enter -= TextBoxEnter;
 
                 monoFlat_LinkLabel2.Location = new Point(welcome.Location.X + welcome.Width, welcome.Location.Y);
@@ -253,13 +251,21 @@ namespace Movie_Catalog
 
             return usr.UserID;
         }
-        private void EnterClickOnLogIn(object sender, KeyEventArgs e)
+        /// <summary>
+        /// Enter click after entering the password and login
+        /// </summary>
+        /// <param name="msg">Message msg entered by default</param>
+        /// <param name="keyData">The Key that was clicked</param>
+        /// <returns></returns>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (keyData == (Keys.Enter) && monoFlat_TextBox2.Text != null && monoFlat_TextBox2.Text != "Password" && monoFlat_TextBox2.Text != "")
             {
-                Console.WriteLine("\nEnter was clicked\n");
+                var sender = monoFlat_TextBox2;
+                var e = new System.EventArgs();
                 monoFlat_Button1_Click(sender, e);
             }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         #endregion
@@ -272,7 +278,7 @@ namespace Movie_Catalog
         {
             LoginPrompt login = new LoginPrompt();
             LoginPromptDispose();
-            login.Show();
+            login.ShowDialog();
             monoFlat_TextBox1.Text = null;
             monoFlat_TextBox2.Text = "******";
         }
@@ -435,10 +441,10 @@ namespace Movie_Catalog
         /// </summary>
         private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
+            int currentMouseOverRow = dataGridView1.HitTest(e.X, e.Y).RowIndex;
 
-            if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right && currentMouseOverRow>=0)
             {
-                int currentMouseOverRow = dataGridView1.HitTest(e.X, e.Y).RowIndex;
                 int currentMouseOverColumn = dataGridView1.HitTest(e.X, e.Y).ColumnIndex;
                 var film = ((List<Movies>)dataGridView1.DataSource).ElementAt(currentMouseOverRow);
                 var userID = getCurrentUserID();

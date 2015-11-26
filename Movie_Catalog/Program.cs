@@ -18,7 +18,10 @@ namespace Movie_Catalog
             Application.SetCompatibleTextRenderingDefault(false);
             MovieDatabaseEntities db = new MovieDatabaseEntities();
             if (!db.Database.Exists())
-                Application.Run(new AddDatabaseSplashScreen());
+            {
+                //if (!Methods.CheckIfTableExist())
+                    Application.Run(new AddDatabaseSplashScreen());
+            }
             Application.Run(new MainApplicationWindow());
         }
     }

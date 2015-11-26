@@ -38,6 +38,54 @@ namespace Movie_Catalog
                 Console.WriteLine("Could not set database: " + e.ToString());
             }
         }
+
+        /// <summary>
+        /// Checks wheter all tables exists
+        /// </summary>
+        /// <returns></returns>
+        public static bool CheckIfTableExist()
+        {
+            MovieDatabaseEntities entity = new MovieDatabaseEntities();
+
+            bool exists = entity.Database
+                     .SqlQuery<int?>(@"
+                         IF (EXISTS (SELECT * 
+                 FROM INFORMATION_SCHEMA.TABLES 
+                 WHERE TABLE_SCHEMA = 'TheSchema' 
+                 AND  TABLE_NAME = 'MainMovieList'))
+BEGIN")
+                     .SingleOrDefault() != null;
+            if (exists)
+            {
+                exists = entity.Database
+                     .SqlQuery<int>(@"
+                    IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Favourite_Hated') 
+                    SELECT 1
+                    ELSE
+                    SELECT 0
+                    ").SingleOrDefault() != null;
+            }
+            else if (exists)
+            {
+                exists = entity.Database
+                     .SqlQuery<int>(@"
+                    IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Playlist') 
+                    SELECT 1
+                    ELSE
+                    SELECT 0
+                    ").SingleOrDefault() != null;
+            }
+            {
+                exists = entity.Database
+                     .SqlQuery<int>(@"
+                    IF EXISTS (SELECT * FROM sys.tables WHERE name = 'User') 
+                    SELECT 1
+                    ELSE
+                    SELECT 0
+                    ").SingleOrDefault() != null;
+            }
+            return exists;
+        }
         #endregion
 
         #region Exit
