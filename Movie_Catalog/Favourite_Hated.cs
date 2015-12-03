@@ -17,6 +17,7 @@ namespace Movie_Catalog
         public int FilmID { get; set; }
         public int UserID { get; set; }
         public int LikeOrDislike { get; set; }
+        public string Movie_Name { get; set; }
     
         public virtual MainMovieList MainMovieList { get; set; }
         public virtual User User { get; set; }

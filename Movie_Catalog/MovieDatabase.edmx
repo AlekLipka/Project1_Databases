@@ -13,13 +13,13 @@
           <Property Name="FilmID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="LikeOrDislike" Type="int" Nullable="false" />
+          <Property Name="Movie_Name" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="MainMovieList">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Movie_Name" Type="nvarchar" MaxLength="50" />
           <Property Name="File_Name" Type="nvarchar(max)" Nullable="false" />
           <Property Name="File_Path" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
@@ -147,6 +147,7 @@
           <FunctionImport Name="sp_upgraddiagrams" />
           <EntitySet Name="Favourite_Hated" EntityType="MovieDatabaseModel.Favourite_Hated" />
           <EntitySet Name="MainMovieLists" EntityType="MovieDatabaseModel.MainMovieList" />
+          <EntitySet Name="Playlists" EntityType="MovieDatabaseModel.Playlist" />
           <EntitySet Name="Users" EntityType="MovieDatabaseModel.User" />
           <AssociationSet Name="FK__Favourite__FilmI__145C0A3F" Association="MovieDatabaseModel.FK__Favourite__FilmI__145C0A3F">
             <End Role="MainMovieList" EntitySet="MainMovieLists" />
@@ -156,7 +157,6 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Favourite_Hated" EntitySet="Favourite_Hated" />
           </AssociationSet>
-          <EntitySet Name="Playlists" EntityType="MovieDatabaseModel.Playlist" />
           <AssociationSet Name="FK_Playlist_MainMovieList" Association="MovieDatabaseModel.FK_Playlist_MainMovieList">
             <End Role="MainMovieList" EntitySet="MainMovieLists" />
             <End Role="Playlist" EntitySet="Playlists" />
@@ -165,7 +165,7 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Playlist" EntitySet="Playlists" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -185,6 +185,7 @@
           <Property Name="FilmID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="LikeOrDislike" Type="Int32" Nullable="false" />
+          <Property Name="Movie_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="MainMovieList" Relationship="MovieDatabaseModel.FK__Favourite__FilmI__145C0A3F" FromRole="Favourite_Hated" ToRole="MainMovieList" />
           <NavigationProperty Name="User" Relationship="MovieDatabaseModel.FK__Favourite__UserI__15502E78" FromRole="Favourite_Hated" ToRole="User" />
         </EntityType>
@@ -193,11 +194,21 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Movie_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="File_Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Favourite_Hated" Relationship="MovieDatabaseModel.FK__Favourite__FilmI__145C0A3F" FromRole="MainMovieList" ToRole="Favourite_Hated" />
           <Property Name="File_Path" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Favourite_Hated" Relationship="MovieDatabaseModel.FK__Favourite__FilmI__145C0A3F" FromRole="MainMovieList" ToRole="Favourite_Hated" />
           <NavigationProperty Name="Playlists" Relationship="MovieDatabaseModel.FK_Playlist_MainMovieList" FromRole="MainMovieList" ToRole="Playlist" />
+        </EntityType>
+        <EntityType Name="Playlist">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="FilmID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="FilmID" Type="Int32" Nullable="false" />
+          <Property Name="IsOnPlaylist" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="MainMovieList" Relationship="MovieDatabaseModel.FK_Playlist_MainMovieList" FromRole="Playlist" ToRole="MainMovieList" />
+          <NavigationProperty Name="User" Relationship="MovieDatabaseModel.FK_Playlist_Users" FromRole="Playlist" ToRole="User" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -233,17 +244,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Playlist">
-          <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="FilmID" />
-          </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="FilmID" Type="Int32" Nullable="false" />
-          <Property Name="IsOnPlaylist" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="MainMovieList" Relationship="MovieDatabaseModel.FK_Playlist_MainMovieList" FromRole="Playlist" ToRole="MainMovieList" />
-          <NavigationProperty Name="User" Relationship="MovieDatabaseModel.FK_Playlist_Users" FromRole="Playlist" ToRole="User" />
-        </EntityType>
         <Association Name="FK_Playlist_MainMovieList">
           <End Type="MovieDatabaseModel.MainMovieList" Role="MainMovieList" Multiplicity="1" />
           <End Type="MovieDatabaseModel.Playlist" Role="Playlist" Multiplicity="*" />
@@ -268,7 +268,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -277,6 +277,7 @@
           <EntitySetMapping Name="Favourite_Hated">
             <EntityTypeMapping TypeName="MovieDatabaseModel.Favourite_Hated">
               <MappingFragment StoreEntitySet="Favourite_Hated">
+                <ScalarProperty Name="Movie_Name" ColumnName="Movie_Name" />
                 <ScalarProperty Name="LikeOrDislike" ColumnName="LikeOrDislike" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="FilmID" ColumnName="FilmID" />
@@ -288,17 +289,7 @@
               <MappingFragment StoreEntitySet="MainMovieList">
                 <ScalarProperty Name="File_Path" ColumnName="File_Path" />
                 <ScalarProperty Name="File_Name" ColumnName="File_Name" />
-                <ScalarProperty Name="Movie_Name" ColumnName="Movie_Name" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="MovieDatabaseModel.User">
-              <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -307,6 +298,15 @@
               <MappingFragment StoreEntitySet="Playlist">
                 <ScalarProperty Name="IsOnPlaylist" ColumnName="IsOnPlaylist" />
                 <ScalarProperty Name="FilmID" ColumnName="FilmID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="MovieDatabaseModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -21,7 +21,6 @@ namespace Movie_Catalog
         }
     
         public int ID { get; set; }
-        public string Movie_Name { get; set; }
         public string File_Name { get; set; }
         public string File_Path { get; set; }
     

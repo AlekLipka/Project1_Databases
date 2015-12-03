@@ -292,7 +292,7 @@ BEGIN")
                              select new Movies
                              {
                                  MovieID = mml.ID,
-                                 Movie_Name = mml.Movie_Name,
+                                 Movie_Name = fh.Movie_Name,
                                  File_Name = mml.File_Name,
                                  LikeOrDislike = fh.LikeOrDislike == 1 ? "Favourite" : (fh.LikeOrDislike == 0 ? "Hated" : ""),
                                  Path = mml.File_Path
@@ -319,7 +319,7 @@ BEGIN")
                              select new Movies
                              {
                                  MovieID = (int)fh.MainMovieList.ID,
-                                 Movie_Name = fh.MainMovieList.Movie_Name,
+                                 Movie_Name = fh.Movie_Name,
                                  File_Name = fh.MainMovieList.File_Name,
                                  LikeOrDislike = fh.LikeOrDislike == 1 ? "Favourite" : (fh.LikeOrDislike == 0 ? "Hated" : ""),
                                  Path = fh.MainMovieList.File_Path
@@ -335,12 +335,16 @@ BEGIN")
         /// </summary>
         /// <param name="moviename">Movie name we want to check for.</param>
         /// <param name="filename">File name of the file we want to change</param>
+
         public static void MovieNameChange(string moviename, string filename){
             try{
             MovieDatabaseEntities db = new MovieDatabaseEntities();
 
-            var result = db.MainMovieLists.SingleOrDefault(o => o.File_Name == filename);
-            if (result.Movie_Name != moviename)
+            var CurrentUserID = MainApplicationWindow.getCurrentUserID();
+            var result = db.Favourite_Hated.SingleOrDefault(o => o.MainMovieList.File_Name == filename && o.UserID == CurrentUserID);
+            
+
+            if (result.Movie_Name != moviename && result.UserID == CurrentUserID )
             {
                 result.Movie_Name = moviename;
                 db.SaveChanges();
