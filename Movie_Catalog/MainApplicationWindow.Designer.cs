@@ -49,13 +49,15 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configureDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.monoFlat_Panel1 = new MonoFlat.MonoFlat_Panel();
             this.monoFlat_LinkLabel1 = new MonoFlat.MonoFlat_LinkLabel();
             this.monoFlat_Label3 = new MonoFlat.MonoFlat_Label();
-            this.configureDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.monoFlat_Button2 = new MonoFlat.MonoFlat_Button();
+            this.monoFlat_Button3 = new MonoFlat.MonoFlat_Button();
             this.monoFlat_ThemeContainer1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -65,6 +67,8 @@
             // monoFlat_ThemeContainer1
             // 
             this.monoFlat_ThemeContainer1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(41)))), ((int)(((byte)(50)))));
+            this.monoFlat_ThemeContainer1.Controls.Add(this.monoFlat_Button3);
+            this.monoFlat_ThemeContainer1.Controls.Add(this.monoFlat_Button2);
             this.monoFlat_ThemeContainer1.Controls.Add(this.Playlist_Button);
             this.monoFlat_ThemeContainer1.Controls.Add(this.HomeList_Button);
             this.monoFlat_ThemeContainer1.Controls.Add(this.welcome);
@@ -208,7 +212,7 @@
             this.monoFlat_TextBox2.Image = null;
             this.monoFlat_TextBox2.Location = new System.Drawing.Point(944, 101);
             this.monoFlat_TextBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.monoFlat_TextBox2.MaxLength = 20;
+            this.monoFlat_TextBox2.MaxLength = 50;
             this.monoFlat_TextBox2.Multiline = false;
             this.monoFlat_TextBox2.Name = "monoFlat_TextBox2";
             this.monoFlat_TextBox2.ReadOnly = false;
@@ -228,7 +232,7 @@
             this.monoFlat_TextBox1.Image = null;
             this.monoFlat_TextBox1.Location = new System.Drawing.Point(648, 101);
             this.monoFlat_TextBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.monoFlat_TextBox1.MaxLength = 20;
+            this.monoFlat_TextBox1.MaxLength = 50;
             this.monoFlat_TextBox1.Multiline = false;
             this.monoFlat_TextBox1.Name = "monoFlat_TextBox1";
             this.monoFlat_TextBox1.ReadOnly = false;
@@ -320,6 +324,13 @@
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(73, 24);
             this.optionsToolStripMenuItem.Text = "Options";
             // 
+            // configureDatabaseToolStripMenuItem
+            // 
+            this.configureDatabaseToolStripMenuItem.Name = "configureDatabaseToolStripMenuItem";
+            this.configureDatabaseToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.configureDatabaseToolStripMenuItem.Text = "Configure Database";
+            this.configureDatabaseToolStripMenuItem.Click += new System.EventHandler(this.configureDatabaseToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -395,12 +406,31 @@
             this.monoFlat_Label3.TabIndex = 10;
             this.monoFlat_Label3.Text = "or";
             // 
-            // configureDatabaseToolStripMenuItem
+            // monoFlat_Button2
             // 
-            this.configureDatabaseToolStripMenuItem.Name = "configureDatabaseToolStripMenuItem";
-            this.configureDatabaseToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
-            this.configureDatabaseToolStripMenuItem.Text = "Configure Database";
-            this.configureDatabaseToolStripMenuItem.Click += new System.EventHandler(this.configureDatabaseToolStripMenuItem_Click);
+            this.monoFlat_Button2.BackColor = System.Drawing.Color.Transparent;
+            this.monoFlat_Button2.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.monoFlat_Button2.Image = null;
+            this.monoFlat_Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.monoFlat_Button2.Location = new System.Drawing.Point(1130, 172);
+            this.monoFlat_Button2.Name = "monoFlat_Button2";
+            this.monoFlat_Button2.Size = new System.Drawing.Size(33, 23);
+            this.monoFlat_Button2.TabIndex = 16;
+            this.monoFlat_Button2.Text = "+";
+            this.monoFlat_Button2.TextAlignment = System.Drawing.StringAlignment.Center;
+            // 
+            // monoFlat_Button3
+            // 
+            this.monoFlat_Button3.BackColor = System.Drawing.Color.Transparent;
+            this.monoFlat_Button3.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.monoFlat_Button3.Image = null;
+            this.monoFlat_Button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.monoFlat_Button3.Location = new System.Drawing.Point(1007, 172);
+            this.monoFlat_Button3.Name = "monoFlat_Button3";
+            this.monoFlat_Button3.Size = new System.Drawing.Size(117, 23);
+            this.monoFlat_Button3.TabIndex = 17;
+            this.monoFlat_Button3.Text = "Playlists";
+            this.monoFlat_Button3.TextAlignment = System.Drawing.StringAlignment.Center;
             // 
             // MainApplicationWindow
             // 
@@ -455,6 +485,8 @@
         private MonoFlat.MonoFlat_Button Playlist_Button;
         private MonoFlat.MonoFlat_Button HomeList_Button;
         private System.Windows.Forms.ToolStripMenuItem configureDatabaseToolStripMenuItem;
+        private MonoFlat.MonoFlat_Button monoFlat_Button3;
+        private MonoFlat.MonoFlat_Button monoFlat_Button2;
     }
 }
 

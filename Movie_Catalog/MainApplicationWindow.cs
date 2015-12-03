@@ -17,6 +17,9 @@ namespace Movie_Catalog
     public partial class MainApplicationWindow : Form
     {
 
+        /// <summary>
+        /// Constructor of the main Form of our apllication
+        /// </summary>
         public MainApplicationWindow()
         {
             InitializeComponent();
