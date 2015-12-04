@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.IO;
 using System.Data.Entity.Validation;
+using MonoFlat;
 
 namespace Movie_Catalog
 {
@@ -50,6 +51,10 @@ namespace Movie_Catalog
                 int wwy = dataGridView1.Width;
                 dataGridView1.Width = w - dataGridView1.Margin.Left - dataGridView1.Margin.Right - 13;
                 dataGridView1.Height = z - rectangledifference - dataGridView1.Location.Y - 10;
+                Playlists_Panel.Size = new System.Drawing.Size(monoFlat_ThemeContainer1.Size.Width - 249, 39);
+                Add_Playlist_Button.Location = new System.Drawing.Point(this.Width - Add_Playlist_Button.Width - Add_Playlist_Button.Margin.Left
+                                                            - Add_Playlist_Button.Margin.Right, 124);
+                //new Point(welcome.Location.X, 124);
                 return;
             }
             base.WndProc(ref m);
@@ -134,7 +139,7 @@ namespace Movie_Catalog
             }
             Cursor.Current = Cursors.Default;
         }
-        
+
         /// <summary>
         /// Function that shows splash screen with database configuration string
         /// </summary>
@@ -176,13 +181,14 @@ namespace Movie_Catalog
                 monoFlat_Panel1.Visible = false;
                 monoFlat_LinkLabel2.Visible = true;
                 ContextMenuAvailable = true;
+                Add_Playlist_Button.Visible = true;
                 Playlist_Button.Visible = true;
                 HomeList_Button.Visible = true;
 
                 welcome.Text = ("Welcome " + login);
                 welcome.Location = new System.Drawing.Point(this.Width - welcome.Width - monoFlat_LinkLabel2.Width - welcome.Margin.Left
                                                             - welcome.Margin.Right - monoFlat_LinkLabel2.Margin.Left
-                                                            - monoFlat_LinkLabel2.Margin.Right, 113);
+                                                            - monoFlat_LinkLabel2.Margin.Right, 101);
                 welcome.Visible = true;
 
                 monoFlat_TextBox2.Text = "Password";
@@ -298,6 +304,7 @@ namespace Movie_Catalog
             monoFlat_Button1.Visible = true;
             monoFlat_Panel1.Visible = true;
             monoFlat_LinkLabel2.Visible = false;
+            Add_Playlist_Button.Visible = false;
             Playlist_Button.Visible = false;
             HomeList_Button.Visible = false;
 
@@ -342,29 +349,29 @@ namespace Movie_Catalog
         #endregion
 
         #region DataGridView
-        
+
         /// <summary>
         /// Editing of a Movie Name in the dataGridView, it saves the input in database
         /// </summary>
         private void DataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            this.BeginInvoke(new MethodInvoker(() => 
+            this.BeginInvoke(new MethodInvoker(() =>
                 {
-                string filename = dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
-                if (dataGridView1.Columns[e.ColumnIndex].Name == "Movie_Name" && dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
-                {
-                    string moviename = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                    string filename = dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
+                    if (dataGridView1.Columns[e.ColumnIndex].Name == "Movie_Name" && dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null)
+                    {
+                        string moviename = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
 
-                    Console.Write("Movie name was changed for: " + filename + "with the following: " + moviename);
-                    Methods.MovieNameChange(moviename, filename);
-                }
-                else
-                {
-                    Methods.MovieNameChange(null, filename);
-                }
-            }));
+                        Console.Write("Movie name was changed for: " + filename + "with the following: " + moviename);
+                        Methods.MovieNameChange(moviename, filename);
+                    }
+                    else
+                    {
+                        Methods.MovieNameChange(null, filename);
+                    }
+                }));
         }
-        
+
         /// <summary>
         /// Refreshes the dataGridView from database that are in Home list
         /// </summary>
@@ -446,7 +453,7 @@ namespace Movie_Catalog
         {
             int currentMouseOverRow = dataGridView1.HitTest(e.X, e.Y).RowIndex;
 
-            if (e.Button == MouseButtons.Right && currentMouseOverRow>=0)
+            if (e.Button == MouseButtons.Right && currentMouseOverRow >= 0)
             {
                 int currentMouseOverColumn = dataGridView1.HitTest(e.X, e.Y).ColumnIndex;
                 var film = ((List<Movies>)dataGridView1.DataSource).ElementAt(currentMouseOverRow);
@@ -457,12 +464,12 @@ namespace Movie_Catalog
                 {
                     MovieDatabaseEntities db = new MovieDatabaseEntities();
                     ContextMenuStrip m = new ContextMenuStrip();
-                    if(film.LikeOrDislike != "Favourite")
+                    if (film.LikeOrDislike != "Favourite")
                         m.Items.Add("Add to Favourite").Name = "Add to Favourite";
-                    if(film.LikeOrDislike != "Hated")
+                    if (film.LikeOrDislike != "Hated")
                         m.Items.Add("Add to Hated").Name = "Add to Hated";
-                    if(film.LikeOrDislike == "Favourite" || film.LikeOrDislike == "Hated")
-                    m.Items.Add("Reset to Normal Status").Name = "Reset to Normal Status";
+                    if (film.LikeOrDislike == "Favourite" || film.LikeOrDislike == "Hated")
+                        m.Items.Add("Reset to Normal Status").Name = "Reset to Normal Status";
                     if (db.Playlists.Any(p => p.FilmID == film.MovieID && p.UserID == userID))
                     {
                         m.Items.Add("Remove from playlist").Name = "Remove from playlist";
@@ -471,7 +478,7 @@ namespace Movie_Catalog
                     {
                         m.Items.Add("Add to playlist").Name = "Add to playlist";
                     }
-                    
+
 
                     Point pt1 = new Point(currentMouseOverColumn, currentMouseOverRow);
                     pt = pt1;
@@ -514,7 +521,7 @@ namespace Movie_Catalog
             }
             if (playlistButtonPressed)
                 RefreshPlaylistGrid();
-            else if(homelistButtonPressed)
+            else if (homelistButtonPressed)
                 RefreshGrid();
         }
         #endregion
@@ -549,8 +556,8 @@ namespace Movie_Catalog
                     }
                     else
                     {
-                       ChangeDirectory(file_name, path);
-                       RefreshGrid();
+                        ChangeDirectory(file_name, path);
+                        RefreshGrid();
                     }
                 }
             }
@@ -648,73 +655,166 @@ namespace Movie_Catalog
         /// <param name="path">An old path to the file. It is needed to MessageBox information</param>
         public void ChangeDirectory(string file_name, string path)
         {
-             var i = 0;
+            var i = 0;
 
-             while (i == 0)
-             {
+            while (i == 0)
+            {
 
-                 FilePathChangeMessageBox MyMessageBox = new FilePathChangeMessageBox();
-                 MyMessageBox.MessageBox_File_Name.Text = "'" + file_name + "'";
-                 MyMessageBox.MessageBox_File_Path.Text = "'" + path + "'";
+                FilePathChangeMessageBox MyMessageBox = new FilePathChangeMessageBox();
+                MyMessageBox.MessageBox_File_Name.Text = "'" + file_name + "'";
+                MyMessageBox.MessageBox_File_Path.Text = "'" + path + "'";
 
 
 
-                 if (MyMessageBox.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                 {
+                if (MyMessageBox.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
 
-                     Stream myStream = null;
-                     OpenFileDialog open = new OpenFileDialog();
-                     open.Filter = "Movie file (*.mkv, *.mov, *.avi, *.mp4, *.divx, *.mpeg, *.mpg)|*.mkv;*mov;*.avi;*.mp4;*.divx;*.mpeg;*.mpg";
+                    Stream myStream = null;
+                    OpenFileDialog open = new OpenFileDialog();
+                    open.Filter = "Movie file (*.mkv, *.mov, *.avi, *.mp4, *.divx, *.mpeg, *.mpg)|*.mkv;*mov;*.avi;*.mp4;*.divx;*.mpeg;*.mpg";
 
-                     if (Properties.Settings.Default.FolderPath != null)
-                     {
-                         open.InitialDirectory = Properties.Settings.Default.FolderFilePath;
-                     }
+                    if (Properties.Settings.Default.FolderPath != null)
+                    {
+                        open.InitialDirectory = Properties.Settings.Default.FolderFilePath;
+                    }
 
-                     if (open.ShowDialog() == DialogResult.OK)
-                     {
-                         try
-                         {
-                             if ((myStream = open.OpenFile()) != null)
-                             {
-                                 using (myStream)
-                                 {
-                                     //string Name;
-                                     FileStream fs = myStream as FileStream;
+                    if (open.ShowDialog() == DialogResult.OK)
+                    {
+                        try
+                        {
+                            if ((myStream = open.OpenFile()) != null)
+                            {
+                                using (myStream)
+                                {
+                                    //string Name;
+                                    FileStream fs = myStream as FileStream;
 
-                                     if (fs != null)
-                                     {
-                                         Properties.Settings.Default.FolderFilePath = fs.Name;
-                                         Properties.Settings.Default.Save();
-                                         Name = System.IO.Path.GetFileNameWithoutExtension(fs.Name);
-                                         if (Name == file_name)
-                                         {
-                                             i = 1;
-                                             AddNewPathToDatabase(fs.Name, Name);
-                                         }
-                                         else
-                                         {
-                                             MessageBox.Show("You chose wrong file! \n \n Try again!");
-                                             i = 0;
-                                         }
-                                     }
-                                 }
-                             }
-                         }
-                         catch (Exception ex)
-                         {
-                             MessageBox.Show("Error: Could not find file. Error: " + ex.Message);
-                         }
-                     }
-                 }
-                 else
-                 {
-                     i = 1;
-                     DeleteOldRowFromDatabase(file_name);
-                 }
-             }
+                                    if (fs != null)
+                                    {
+                                        Properties.Settings.Default.FolderFilePath = fs.Name;
+                                        Properties.Settings.Default.Save();
+                                        Name = System.IO.Path.GetFileNameWithoutExtension(fs.Name);
+                                        if (Name == file_name)
+                                        {
+                                            i = 1;
+                                            AddNewPathToDatabase(fs.Name, Name);
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("You chose wrong file! \n \n Try again!");
+                                            i = 0;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error: Could not find file. Error: " + ex.Message);
+                        }
+                    }
+                }
+                else
+                {
+                    i = 1;
+                    DeleteOldRowFromDatabase(file_name);
+                }
+            }
         }
-        
+
         #endregion
+
+        public bool PlaylistButtonActive = true;
+        /// <summary>
+        /// Add playlist to List_Of_Playlists in database
+        /// </summary>
+        private void Add_Playlist_Button_Click(object sender, EventArgs e)
+        {
+            if (PlaylistButtonActive)
+            {
+                PlaylistButtonActive = false;
+                MovieDatabaseEntities db = new MovieDatabaseEntities();
+                var UserID = getCurrentUserID();
+
+                var i =
+                (from user in db.Users
+                 where user.UserID == UserID
+                 select user.Number_Of_Playlists).FirstOrDefault();
+
+                var usr = db.Users.SingleOrDefault(o => o.UserID == UserID);
+                usr.Number_Of_Playlists++; // Increase Number_Of_Playlists for the Current user
+
+                List_Of_Playlists playlist = new List_Of_Playlists();
+
+                playlist.ID = i + 1;
+                playlist.UserID = UserID;
+                playlist.Playlist_Name = "Playlist" + playlist.ID;
+
+                db.List_Of_Playlists.Add(playlist);
+                db.SaveChanges();
+
+                AddButtonToPlaylist(i);
+                PlaylistButtonActive = true;
+            }
+        }
+
+        public void AddButtonToPlaylist(int i)
+        {
+            MovieDatabaseEntities db = new MovieDatabaseEntities();
+            var userID = getCurrentUserID();
+
+            var text =
+            (from playlist in db.List_Of_Playlists
+             where playlist.UserID == userID && playlist.ID == i+1
+             select playlist.Playlist_Name).FirstOrDefault();
+
+            if (i == 0)
+            {
+                MonoFlat_Button button = new MonoFlat_Button();
+                //button.Location = new Point(i*93, 0);
+                //button.Anchor = AnchorStyles.Left;
+                //button.Dock = DockStyle.Left;
+                button.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+                button.Width = 89;
+                button.Height = 19;
+                button.Text = text;
+                button.Location = new Point(0, 0);
+                button.Click += new EventHandler(ButtonClickOneEvent);
+                int tag = i + 1;
+                button.Tag = tag;
+                Playlists_Panel.Controls.Add(button);
+            }
+            else
+            {
+                foreach (MonoFlat_Button item in Playlists_Panel.Controls)
+                {
+                    if (item.Tag.Equals(i))
+                    {
+                        MonoFlat_Button prevButton = item;
+
+
+
+                        MonoFlat_Button button = new MonoFlat_Button();
+                        button.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+                        button.Width = 89;
+                        button.Height = 19;
+                        button.Text = text;
+                        button.Location = new Point(prevButton.Bounds.Right + 6, 0);
+                        button.Click += new EventHandler(ButtonClickOneEvent);
+                        int tag = i + 1;
+                        button.Tag = tag;
+                        Playlists_Panel.Controls.Add(button);
+                    }
+                }
+            }
+        }
+
+        private void ButtonClickOneEvent(object sender, EventArgs e)
+        {
+            MonoFlat_Button button = sender as MonoFlat_Button;
+            int i = (int)button.Tag;
+
+            MessageBox.Show("You clicked Playlist" + i + " button.");
+        }
     }
 }

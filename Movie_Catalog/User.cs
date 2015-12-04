@@ -17,14 +17,15 @@ namespace Movie_Catalog
         public User()
         {
             this.Favourite_Hated = new HashSet<Favourite_Hated>();
-            this.Playlists = new HashSet<Playlist>();
+            this.List_Of_Playlists = new HashSet<List_Of_Playlists>();
         }
     
         public int UserID { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        public int Number_Of_Playlists { get; set; }
     
         public virtual ICollection<Favourite_Hated> Favourite_Hated { get; set; }
-        public virtual ICollection<Playlist> Playlists { get; set; }
+        public virtual ICollection<List_Of_Playlists> List_Of_Playlists { get; set; }
     }
 }

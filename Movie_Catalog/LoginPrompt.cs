@@ -83,6 +83,7 @@ namespace Movie_Catalog
             {
                 user.Username = monoFlat_TextBox1.Text;
                 user.Password = monoFlat_TextBox2.Text;
+                user.Number_Of_Playlists = 0;
                 db.Users.Add(user);
                 db.SaveChanges();
                 validation = false;

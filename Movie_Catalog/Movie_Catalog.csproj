@@ -82,6 +82,9 @@
     <Compile Include="Favourite_Hated.cs">
       <DependentUpon>MovieDatabase.tt</DependentUpon>
     </Compile>
+    <Compile Include="List_Of_Playlists.cs">
+      <DependentUpon>MovieDatabase.tt</DependentUpon>
+    </Compile>
     <Compile Include="MainApplicationWindow.cs">
       <SubType>Form</SubType>
     </Compile>

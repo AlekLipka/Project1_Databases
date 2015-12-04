@@ -445,14 +445,14 @@ BEGIN")
 
                     playlist.FilmID = movie.ID;
                     playlist.UserID = usr.UserID;
-                    playlist.IsOnPlaylist = whichcase;
+                    playlist.PlaylistID = whichcase;
 
                     db.Playlists.Add(playlist);
                     db.SaveChanges();
                 }
-                else if (search.IsOnPlaylist != whichcase)
+                else if (search.PlaylistID != whichcase)
                 {
-                    search.IsOnPlaylist = whichcase;
+                    search.PlaylistID = whichcase;
                     db.SaveChanges();
                 }
             }

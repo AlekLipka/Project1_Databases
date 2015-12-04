@@ -28,6 +28,7 @@ namespace Movie_Catalog
         }
     
         public virtual DbSet<Favourite_Hated> Favourite_Hated { get; set; }
+        public virtual DbSet<List_Of_Playlists> List_Of_Playlists { get; set; }
         public virtual DbSet<MainMovieList> MainMovieLists { get; set; }
         public virtual DbSet<Playlist> Playlists { get; set; }
         public virtual DbSet<User> Users { get; set; }

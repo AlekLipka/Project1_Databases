@@ -50,11 +50,12 @@
             this.monoFlat_ThemeContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.monoFlat_ThemeContainer1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.monoFlat_ThemeContainer1.Location = new System.Drawing.Point(0, 0);
+            this.monoFlat_ThemeContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.monoFlat_ThemeContainer1.Name = "monoFlat_ThemeContainer1";
-            this.monoFlat_ThemeContainer1.Padding = new System.Windows.Forms.Padding(10, 70, 10, 9);
+            this.monoFlat_ThemeContainer1.Padding = new System.Windows.Forms.Padding(8, 57, 8, 7);
             this.monoFlat_ThemeContainer1.RoundCorners = true;
             this.monoFlat_ThemeContainer1.Sizable = false;
-            this.monoFlat_ThemeContainer1.Size = new System.Drawing.Size(552, 399);
+            this.monoFlat_ThemeContainer1.Size = new System.Drawing.Size(414, 324);
             this.monoFlat_ThemeContainer1.SmartBounds = true;
             this.monoFlat_ThemeContainer1.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultLocation;
             this.monoFlat_ThemeContainer1.TabIndex = 0;
@@ -66,9 +67,10 @@
             this.monoFlat_Button2.Font = new System.Drawing.Font("Segoe UI Semibold", 16.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.monoFlat_Button2.Image = null;
             this.monoFlat_Button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.monoFlat_Button2.Location = new System.Drawing.Point(487, 12);
+            this.monoFlat_Button2.Location = new System.Drawing.Point(365, 10);
+            this.monoFlat_Button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.monoFlat_Button2.Name = "monoFlat_Button2";
-            this.monoFlat_Button2.Size = new System.Drawing.Size(52, 33);
+            this.monoFlat_Button2.Size = new System.Drawing.Size(39, 27);
             this.monoFlat_Button2.TabIndex = 1;
             this.monoFlat_Button2.Text = "x";
             this.monoFlat_Button2.TextAlignment = System.Drawing.StringAlignment.Center;
@@ -84,10 +86,11 @@
             this.monoFlat_Panel1.Controls.Add(this.monoFlat_TextBox2);
             this.monoFlat_Panel1.Controls.Add(this.monoFlat_TextBox1);
             this.monoFlat_Panel1.Controls.Add(this.monoFlat_Button1);
-            this.monoFlat_Panel1.Location = new System.Drawing.Point(13, 73);
+            this.monoFlat_Panel1.Location = new System.Drawing.Point(10, 59);
+            this.monoFlat_Panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.monoFlat_Panel1.Name = "monoFlat_Panel1";
-            this.monoFlat_Panel1.Padding = new System.Windows.Forms.Padding(5);
-            this.monoFlat_Panel1.Size = new System.Drawing.Size(526, 314);
+            this.monoFlat_Panel1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.monoFlat_Panel1.Size = new System.Drawing.Size(394, 255);
             this.monoFlat_Panel1.TabIndex = 0;
             this.monoFlat_Panel1.Text = "monoFlat_Panel1";
             // 
@@ -97,9 +100,10 @@
             this.monoFlat_Label3.BackColor = System.Drawing.Color.Transparent;
             this.monoFlat_Label3.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.monoFlat_Label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(116)))), ((int)(((byte)(125)))), ((int)(((byte)(132)))));
-            this.monoFlat_Label3.Location = new System.Drawing.Point(8, 195);
+            this.monoFlat_Label3.Location = new System.Drawing.Point(0, 160);
+            this.monoFlat_Label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.monoFlat_Label3.Name = "monoFlat_Label3";
-            this.monoFlat_Label3.Size = new System.Drawing.Size(159, 25);
+            this.monoFlat_Label3.Size = new System.Drawing.Size(126, 20);
             this.monoFlat_Label3.TabIndex = 6;
             this.monoFlat_Label3.Text = "Repeat password:";
             // 
@@ -109,9 +113,10 @@
             this.monoFlat_Label2.BackColor = System.Drawing.Color.Transparent;
             this.monoFlat_Label2.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.monoFlat_Label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(116)))), ((int)(((byte)(125)))), ((int)(((byte)(132)))));
-            this.monoFlat_Label2.Location = new System.Drawing.Point(71, 118);
+            this.monoFlat_Label2.Location = new System.Drawing.Point(53, 96);
+            this.monoFlat_Label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.monoFlat_Label2.Name = "monoFlat_Label2";
-            this.monoFlat_Label2.Size = new System.Drawing.Size(96, 25);
+            this.monoFlat_Label2.Size = new System.Drawing.Size(74, 20);
             this.monoFlat_Label2.TabIndex = 5;
             this.monoFlat_Label2.Text = "Password:";
             // 
@@ -121,9 +126,10 @@
             this.monoFlat_Label1.BackColor = System.Drawing.Color.Transparent;
             this.monoFlat_Label1.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.monoFlat_Label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(116)))), ((int)(((byte)(125)))), ((int)(((byte)(132)))));
-            this.monoFlat_Label1.Location = new System.Drawing.Point(66, 44);
+            this.monoFlat_Label1.Location = new System.Drawing.Point(50, 36);
+            this.monoFlat_Label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.monoFlat_Label1.Name = "monoFlat_Label1";
-            this.monoFlat_Label1.Size = new System.Drawing.Size(101, 25);
+            this.monoFlat_Label1.Size = new System.Drawing.Size(78, 20);
             this.monoFlat_Label1.TabIndex = 4;
             this.monoFlat_Label1.Text = "Username:";
             // 
@@ -133,12 +139,13 @@
             this.monoFlat_TextBox3.Font = new System.Drawing.Font("Tahoma", 11F);
             this.monoFlat_TextBox3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(176)))), ((int)(((byte)(183)))), ((int)(((byte)(191)))));
             this.monoFlat_TextBox3.Image = null;
-            this.monoFlat_TextBox3.Location = new System.Drawing.Point(169, 184);
+            this.monoFlat_TextBox3.Location = new System.Drawing.Point(127, 150);
+            this.monoFlat_TextBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.monoFlat_TextBox3.MaxLength = 50;
             this.monoFlat_TextBox3.Multiline = false;
             this.monoFlat_TextBox3.Name = "monoFlat_TextBox3";
             this.monoFlat_TextBox3.ReadOnly = false;
-            this.monoFlat_TextBox3.Size = new System.Drawing.Size(295, 46);
+            this.monoFlat_TextBox3.Size = new System.Drawing.Size(221, 41);
             this.monoFlat_TextBox3.TabIndex = 3;
             this.monoFlat_TextBox3.Text = "****";
             this.monoFlat_TextBox3.TextAlignment = System.Windows.Forms.HorizontalAlignment.Left;
@@ -151,12 +158,13 @@
             this.monoFlat_TextBox2.Font = new System.Drawing.Font("Tahoma", 11F);
             this.monoFlat_TextBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(176)))), ((int)(((byte)(183)))), ((int)(((byte)(191)))));
             this.monoFlat_TextBox2.Image = null;
-            this.monoFlat_TextBox2.Location = new System.Drawing.Point(169, 108);
+            this.monoFlat_TextBox2.Location = new System.Drawing.Point(127, 88);
+            this.monoFlat_TextBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.monoFlat_TextBox2.MaxLength = 50;
             this.monoFlat_TextBox2.Multiline = false;
             this.monoFlat_TextBox2.Name = "monoFlat_TextBox2";
             this.monoFlat_TextBox2.ReadOnly = false;
-            this.monoFlat_TextBox2.Size = new System.Drawing.Size(295, 46);
+            this.monoFlat_TextBox2.Size = new System.Drawing.Size(221, 41);
             this.monoFlat_TextBox2.TabIndex = 2;
             this.monoFlat_TextBox2.Text = "****";
             this.monoFlat_TextBox2.TextAlignment = System.Windows.Forms.HorizontalAlignment.Left;
@@ -169,12 +177,13 @@
             this.monoFlat_TextBox1.Font = new System.Drawing.Font("Tahoma", 11F);
             this.monoFlat_TextBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(176)))), ((int)(((byte)(183)))), ((int)(((byte)(191)))));
             this.monoFlat_TextBox1.Image = null;
-            this.monoFlat_TextBox1.Location = new System.Drawing.Point(169, 32);
+            this.monoFlat_TextBox1.Location = new System.Drawing.Point(127, 26);
+            this.monoFlat_TextBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.monoFlat_TextBox1.MaxLength = 50;
             this.monoFlat_TextBox1.Multiline = false;
             this.monoFlat_TextBox1.Name = "monoFlat_TextBox1";
             this.monoFlat_TextBox1.ReadOnly = false;
-            this.monoFlat_TextBox1.Size = new System.Drawing.Size(295, 46);
+            this.monoFlat_TextBox1.Size = new System.Drawing.Size(221, 41);
             this.monoFlat_TextBox1.TabIndex = 1;
             this.monoFlat_TextBox1.TextAlignment = System.Windows.Forms.HorizontalAlignment.Left;
             this.monoFlat_TextBox1.UseSystemPasswordChar = false;
@@ -186,9 +195,10 @@
             this.monoFlat_Button1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.monoFlat_Button1.Image = null;
             this.monoFlat_Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.monoFlat_Button1.Location = new System.Drawing.Point(191, 252);
+            this.monoFlat_Button1.Location = new System.Drawing.Point(143, 205);
+            this.monoFlat_Button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.monoFlat_Button1.Name = "monoFlat_Button1";
-            this.monoFlat_Button1.Size = new System.Drawing.Size(146, 41);
+            this.monoFlat_Button1.Size = new System.Drawing.Size(110, 33);
             this.monoFlat_Button1.TabIndex = 0;
             this.monoFlat_Button1.Text = "Sign In";
             this.monoFlat_Button1.TextAlignment = System.Drawing.StringAlignment.Center;
@@ -196,11 +206,12 @@
             // 
             // LoginPrompt
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(552, 399);
+            this.ClientSize = new System.Drawing.Size(414, 324);
             this.Controls.Add(this.monoFlat_ThemeContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "LoginPrompt";
             this.Text = "Sign In";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;

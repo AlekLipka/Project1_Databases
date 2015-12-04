@@ -5,14 +5,16 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="bc98b5cab98d4fdd9c4ecf240d27b57c" Name="Diagram1">
-        <EntityTypeShape EntityType="MovieDatabaseModel.Favourite_Hated" Width="1.5" PointX="4" PointY="1" />
-        <EntityTypeShape EntityType="MovieDatabaseModel.MainMovieList" Width="1.5" PointX="6.375" PointY="2.5" />
-        <EntityTypeShape EntityType="MovieDatabaseModel.Playlist" Width="1.5" PointX="4" PointY="3.625" />
-        <EntityTypeShape EntityType="MovieDatabaseModel.User" Width="1.5" PointX="1.5" PointY="2.5" />
+        <EntityTypeShape EntityType="MovieDatabaseModel.Favourite_Hated" Width="1.5" PointX="3.25" PointY="0.5" />
+        <EntityTypeShape EntityType="MovieDatabaseModel.List_Of_Playlists" Width="1.5" PointX="4.5" PointY="3.25" />
+        <EntityTypeShape EntityType="MovieDatabaseModel.MainMovieList" Width="1.5" PointX="0.625" PointY="0.5" />
+        <EntityTypeShape EntityType="MovieDatabaseModel.Playlist" Width="1.5" PointX="2" PointY="3.25" />
+        <EntityTypeShape EntityType="MovieDatabaseModel.User" Width="1.5" PointX="5.875" PointY="0.625" />
         <AssociationConnector Association="MovieDatabaseModel.FK__Favourite__FilmI__145C0A3F" />
         <AssociationConnector Association="MovieDatabaseModel.FK__Favourite__UserI__15502E78" />
-        <AssociationConnector Association="MovieDatabaseModel.FK_Playlist_MainMovieList" />
-        <AssociationConnector Association="MovieDatabaseModel.FK_Playlist_Users" />
+        <AssociationConnector Association="MovieDatabaseModel.FK_List_Of_Playlists_Users" />
+        <AssociationConnector Association="MovieDatabaseModel.FK_Playlist_List_Of_Playlists1" />
+        <AssociationConnector Association="MovieDatabaseModel.FK_Playlist_MainMovieList1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -15,6 +15,15 @@
           <Property Name="LikeOrDislike" Type="int" Nullable="false" />
           <Property Name="Movie_Name" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="List_Of_Playlists">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Playlist_Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="MainMovieList">
           <Key>
             <PropertyRef Name="ID" />
@@ -25,12 +34,12 @@
         </EntityType>
         <EntityType Name="Playlist">
           <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="FilmID" />
+            <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="FilmID" Type="int" Nullable="false" />
-          <Property Name="IsOnPlaylist" Type="int" Nullable="false" />
+          <Property Name="PlaylistID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -39,6 +48,7 @@
           <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Number_Of_Playlists" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK__Favourite__FilmI__145C0A3F">
           <End Role="MainMovieList" Type="Self.MainMovieList" Multiplicity="1" />
@@ -64,7 +74,33 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Playlist_MainMovieList">
+        <Association Name="FK_List_Of_Playlists_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="List_Of_Playlists" Type="Self.List_Of_Playlists" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="List_Of_Playlists">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Playlist_List_Of_Playlists1">
+          <End Role="List_Of_Playlists" Type="Self.List_Of_Playlists" Multiplicity="1" />
+          <End Role="Playlist" Type="Self.Playlist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="List_Of_Playlists">
+              <PropertyRef Name="ID" />
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Playlist">
+              <PropertyRef Name="PlaylistID" />
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Playlist_MainMovieList1">
           <End Role="MainMovieList" Type="Self.MainMovieList" Multiplicity="1" />
           <End Role="Playlist" Type="Self.Playlist" Multiplicity="*" />
           <ReferentialConstraint>
@@ -76,20 +112,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Playlist_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Playlist" Type="Self.Playlist" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Playlist">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="MovieDatabaseModelStoreContainer">
           <EntitySet Name="Favourite_Hated" EntityType="Self.Favourite_Hated" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="List_Of_Playlists" EntityType="Self.List_Of_Playlists" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MainMovieList" EntityType="Self.MainMovieList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Playlist" EntityType="Self.Playlist" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
@@ -101,12 +126,16 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Favourite_Hated" EntitySet="Favourite_Hated" />
           </AssociationSet>
-          <AssociationSet Name="FK_Playlist_MainMovieList" Association="Self.FK_Playlist_MainMovieList">
-            <End Role="MainMovieList" EntitySet="MainMovieList" />
+          <AssociationSet Name="FK_List_Of_Playlists_Users" Association="Self.FK_List_Of_Playlists_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="List_Of_Playlists" EntitySet="List_Of_Playlists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Playlist_List_Of_Playlists1" Association="Self.FK_Playlist_List_Of_Playlists1">
+            <End Role="List_Of_Playlists" EntitySet="List_Of_Playlists" />
             <End Role="Playlist" EntitySet="Playlist" />
           </AssociationSet>
-          <AssociationSet Name="FK_Playlist_Users" Association="Self.FK_Playlist_Users">
-            <End Role="Users" EntitySet="Users" />
+          <AssociationSet Name="FK_Playlist_MainMovieList1" Association="Self.FK_Playlist_MainMovieList1">
+            <End Role="MainMovieList" EntitySet="MainMovieList" />
             <End Role="Playlist" EntitySet="Playlist" />
           </AssociationSet>
         </EntityContainer>
@@ -146,6 +175,7 @@
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
           <EntitySet Name="Favourite_Hated" EntityType="MovieDatabaseModel.Favourite_Hated" />
+          <EntitySet Name="List_Of_Playlists" EntityType="MovieDatabaseModel.List_Of_Playlists" />
           <EntitySet Name="MainMovieLists" EntityType="MovieDatabaseModel.MainMovieList" />
           <EntitySet Name="Playlists" EntityType="MovieDatabaseModel.Playlist" />
           <EntitySet Name="Users" EntityType="MovieDatabaseModel.User" />
@@ -157,12 +187,16 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Favourite_Hated" EntitySet="Favourite_Hated" />
           </AssociationSet>
-          <AssociationSet Name="FK_Playlist_MainMovieList" Association="MovieDatabaseModel.FK_Playlist_MainMovieList">
-            <End Role="MainMovieList" EntitySet="MainMovieLists" />
+          <AssociationSet Name="FK_List_Of_Playlists_Users" Association="MovieDatabaseModel.FK_List_Of_Playlists_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="List_Of_Playlists" EntitySet="List_Of_Playlists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Playlist_List_Of_Playlists1" Association="MovieDatabaseModel.FK_Playlist_List_Of_Playlists1">
+            <End Role="List_Of_Playlists" EntitySet="List_Of_Playlists" />
             <End Role="Playlist" EntitySet="Playlists" />
           </AssociationSet>
-          <AssociationSet Name="FK_Playlist_Users" Association="MovieDatabaseModel.FK_Playlist_Users">
-            <End Role="User" EntitySet="Users" />
+          <AssociationSet Name="FK_Playlist_MainMovieList1" Association="MovieDatabaseModel.FK_Playlist_MainMovieList1">
+            <End Role="MainMovieList" EntitySet="MainMovieLists" />
             <End Role="Playlist" EntitySet="Playlists" />
           </AssociationSet>
           </EntityContainer>
@@ -189,6 +223,17 @@
           <NavigationProperty Name="MainMovieList" Relationship="MovieDatabaseModel.FK__Favourite__FilmI__145C0A3F" FromRole="Favourite_Hated" ToRole="MainMovieList" />
           <NavigationProperty Name="User" Relationship="MovieDatabaseModel.FK__Favourite__UserI__15502E78" FromRole="Favourite_Hated" ToRole="User" />
         </EntityType>
+        <EntityType Name="List_Of_Playlists">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Playlist_Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="MovieDatabaseModel.FK_List_Of_Playlists_Users" FromRole="List_Of_Playlists" ToRole="User" />
+          <NavigationProperty Name="Playlists" Relationship="MovieDatabaseModel.FK_Playlist_List_Of_Playlists1" FromRole="List_Of_Playlists" ToRole="Playlist" />
+        </EntityType>
         <EntityType Name="MainMovieList">
           <Key>
             <PropertyRef Name="ID" />
@@ -197,18 +242,18 @@
           <Property Name="File_Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="File_Path" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Favourite_Hated" Relationship="MovieDatabaseModel.FK__Favourite__FilmI__145C0A3F" FromRole="MainMovieList" ToRole="Favourite_Hated" />
-          <NavigationProperty Name="Playlists" Relationship="MovieDatabaseModel.FK_Playlist_MainMovieList" FromRole="MainMovieList" ToRole="Playlist" />
+          <NavigationProperty Name="Playlists" Relationship="MovieDatabaseModel.FK_Playlist_MainMovieList1" FromRole="MainMovieList" ToRole="Playlist" />
         </EntityType>
         <EntityType Name="Playlist">
           <Key>
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="FilmID" />
+            <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="FilmID" Type="Int32" Nullable="false" />
-          <Property Name="IsOnPlaylist" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="MainMovieList" Relationship="MovieDatabaseModel.FK_Playlist_MainMovieList" FromRole="Playlist" ToRole="MainMovieList" />
-          <NavigationProperty Name="User" Relationship="MovieDatabaseModel.FK_Playlist_Users" FromRole="Playlist" ToRole="User" />
+          <Property Name="PlaylistID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="List_Of_Playlists" Relationship="MovieDatabaseModel.FK_Playlist_List_Of_Playlists1" FromRole="Playlist" ToRole="List_Of_Playlists" />
+          <NavigationProperty Name="MainMovieList" Relationship="MovieDatabaseModel.FK_Playlist_MainMovieList1" FromRole="Playlist" ToRole="MainMovieList" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -217,8 +262,9 @@
           <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Number_Of_Playlists" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Favourite_Hated" Relationship="MovieDatabaseModel.FK__Favourite__UserI__15502E78" FromRole="User" ToRole="Favourite_Hated" />
-          <NavigationProperty Name="Playlists" Relationship="MovieDatabaseModel.FK_Playlist_Users" FromRole="User" ToRole="Playlist" />
+          <NavigationProperty Name="List_Of_Playlists" Relationship="MovieDatabaseModel.FK_List_Of_Playlists_Users" FromRole="User" ToRole="List_Of_Playlists" />
         </EntityType>
         <Association Name="FK__Favourite__FilmI__145C0A3F">
           <End Type="MovieDatabaseModel.MainMovieList" Role="MainMovieList" Multiplicity="1" />
@@ -244,7 +290,33 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Playlist_MainMovieList">
+        <Association Name="FK_List_Of_Playlists_Users">
+          <End Type="MovieDatabaseModel.User" Role="User" Multiplicity="1" />
+          <End Type="MovieDatabaseModel.List_Of_Playlists" Role="List_Of_Playlists" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="List_Of_Playlists">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Playlist_List_Of_Playlists1">
+          <End Type="MovieDatabaseModel.List_Of_Playlists" Role="List_Of_Playlists" Multiplicity="1" />
+          <End Type="MovieDatabaseModel.Playlist" Role="Playlist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="List_Of_Playlists">
+              <PropertyRef Name="ID" />
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Playlist">
+              <PropertyRef Name="PlaylistID" />
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Playlist_MainMovieList1">
           <End Type="MovieDatabaseModel.MainMovieList" Role="MainMovieList" Multiplicity="1" />
           <End Type="MovieDatabaseModel.Playlist" Role="Playlist" Multiplicity="*" />
           <ReferentialConstraint>
@@ -253,18 +325,6 @@
             </Principal>
             <Dependent Role="Playlist">
               <PropertyRef Name="FilmID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Playlist_Users">
-          <End Type="MovieDatabaseModel.User" Role="User" Multiplicity="1" />
-          <End Type="MovieDatabaseModel.Playlist" Role="Playlist" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Playlist">
-              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -284,6 +344,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="List_Of_Playlists">
+            <EntityTypeMapping TypeName="MovieDatabaseModel.List_Of_Playlists">
+              <MappingFragment StoreEntitySet="List_Of_Playlists">
+                <ScalarProperty Name="Playlist_Name" ColumnName="Playlist_Name" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="MainMovieLists">
             <EntityTypeMapping TypeName="MovieDatabaseModel.MainMovieList">
               <MappingFragment StoreEntitySet="MainMovieList">
@@ -296,15 +365,17 @@
           <EntitySetMapping Name="Playlists">
             <EntityTypeMapping TypeName="MovieDatabaseModel.Playlist">
               <MappingFragment StoreEntitySet="Playlist">
-                <ScalarProperty Name="IsOnPlaylist" ColumnName="IsOnPlaylist" />
+                <ScalarProperty Name="PlaylistID" ColumnName="PlaylistID" />
                 <ScalarProperty Name="FilmID" ColumnName="FilmID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="MovieDatabaseModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Number_Of_Playlists" ColumnName="Number_Of_Playlists" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />

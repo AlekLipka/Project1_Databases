@@ -12,14 +12,18 @@ namespace Movie_Catalog
     using System;
     using System.Collections.Generic;
     
-    public partial class Playlist
+    public partial class List_Of_Playlists
     {
+        public List_Of_Playlists()
+        {
+            this.Playlists = new HashSet<Playlist>();
+        }
+    
         public int ID { get; set; }
         public int UserID { get; set; }
-        public int FilmID { get; set; }
-        public int PlaylistID { get; set; }
+        public string Playlist_Name { get; set; }
     
-        public virtual List_Of_Playlists List_Of_Playlists { get; set; }
-        public virtual MainMovieList MainMovieList { get; set; }
+        public virtual User User { get; set; }
+        public virtual ICollection<Playlist> Playlists { get; set; }
     }
 }
