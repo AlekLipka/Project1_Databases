@@ -768,12 +768,9 @@ namespace Movie_Catalog
              where playlist.UserID == userID && playlist.ID == i+1
              select playlist.Playlist_Name).FirstOrDefault();
 
-            if (i == 0)
+            if(Playlists_Panel.Controls.Count == 0)
             {
                 MonoFlat_Button button = new MonoFlat_Button();
-                //button.Location = new Point(i*93, 0);
-                //button.Anchor = AnchorStyles.Left;
-                //button.Dock = DockStyle.Left;
                 button.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
                 button.Width = 89;
                 button.Height = 19;
@@ -791,8 +788,6 @@ namespace Movie_Catalog
                     if (item.Tag.Equals(i))
                     {
                         MonoFlat_Button prevButton = item;
-
-
 
                         MonoFlat_Button button = new MonoFlat_Button();
                         button.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
