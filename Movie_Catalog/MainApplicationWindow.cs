@@ -307,6 +307,7 @@ namespace Movie_Catalog
             Add_Playlist_Button.Visible = false;
             Playlist_Button.Visible = false;
             HomeList_Button.Visible = false;
+            removeAllPlaylistButtons();
 
             welcome.Text = null;
             welcome.Visible = false;
@@ -753,12 +754,15 @@ namespace Movie_Catalog
                 db.List_Of_Playlists.Add(playlist);
                 db.SaveChanges();
 
-                AddButtonToPlaylist(i);
+                AddPlaylistButtonToPanel(i);
                 PlaylistButtonActive = true;
             }
         }
-
-        public void AddButtonToPlaylist(int i)
+        /// <summary>
+        /// Add Playlist button in Playlist_Panel
+        /// </summary>
+        /// <param name="i">number of user's playlists</param>
+        public void AddPlaylistButtonToPanel(int i)
         {
             MovieDatabaseEntities db = new MovieDatabaseEntities();
             var userID = getCurrentUserID();
@@ -804,8 +808,49 @@ namespace Movie_Catalog
             }
         }
 
+        /// <summary>
+        /// Removes all playlist buttons from Playlist_Panel
+        /// </summary>
+        public void removeAllPlaylistButtons()
+        {
+            MovieDatabaseEntities db = new MovieDatabaseEntities();
+            var UserID = getCurrentUserID();
+
+            var numberOfPlaylists =
+                (from user in db.Users
+                 where user.UserID == UserID
+                 select user.Number_Of_Playlists).FirstOrDefault();
+
+            for(int i=0; i<numberOfPlaylists; i++)
+            {
+                deletePlaylistButton(i + 1);
+            }
+        }
+
+        /// <summary>
+        /// Remove playlist button from Playlist_Panel
+        /// </summary>
+        /// <param name="tag">tag of button that will be removed</param>
+        public void deletePlaylistButton(int tag)
+        {
+            foreach (MonoFlat_Button button in Playlists_Panel.Controls)
+            {
+                if(button.Tag.Equals(tag))
+                {
+                    Playlists_Panel.Controls.Remove(button);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Playlist Button click event
+        /// </summary>
         private void ButtonClickOneEvent(object sender, EventArgs e)
         {
+            ///////Use Playlist_Button_Click() its defined on the top
+
+
             MonoFlat_Button button = sender as MonoFlat_Button;
             int i = (int)button.Tag;
 
