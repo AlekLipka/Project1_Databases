@@ -100,7 +100,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Playlist_MainMovieList1">
+        <Association Name="FK_Playlist_MainMovieList">
           <End Role="MainMovieList" Type="Self.MainMovieList" Multiplicity="1" />
           <End Role="Playlist" Type="Self.Playlist" Multiplicity="*" />
           <ReferentialConstraint>
@@ -134,7 +134,7 @@
             <End Role="List_Of_Playlists" EntitySet="List_Of_Playlists" />
             <End Role="Playlist" EntitySet="Playlist" />
           </AssociationSet>
-          <AssociationSet Name="FK_Playlist_MainMovieList1" Association="Self.FK_Playlist_MainMovieList1">
+          <AssociationSet Name="FK_Playlist_MainMovieList" Association="Self.FK_Playlist_MainMovieList">
             <End Role="MainMovieList" EntitySet="MainMovieList" />
             <End Role="Playlist" EntitySet="Playlist" />
           </AssociationSet>

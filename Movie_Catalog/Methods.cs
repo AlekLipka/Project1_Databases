@@ -307,7 +307,7 @@ BEGIN")
         /// Set information to be displayed in dataGridView1 after clicking "Playlist" button
         /// </summary>
         /// <returns>Return list of movies to add to dataGridView1</returns>
-        public static List<Movies> AddItemToPlaylist()
+        public static List<Movies> AddItemToPlaylist(int tag)
         {
             int UserID = MainApplicationWindow.getCurrentUserID();
 
@@ -315,7 +315,7 @@ BEGIN")
 
             var movieQuery = from fh in db.Favourite_Hated
                              join p in db.Playlists on new { ID = fh.FilmID } equals new { ID = p.FilmID }
-                             where (p.UserID == fh.UserID && p.UserID == UserID)
+                             where (p.UserID == fh.UserID && p.UserID == UserID && p.PlaylistID == tag)
                              select new Movies
                              {
                                  MovieID = (int)fh.MainMovieList.ID,

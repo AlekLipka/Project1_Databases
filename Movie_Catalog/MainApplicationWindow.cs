@@ -182,6 +182,7 @@ namespace Movie_Catalog
                 monoFlat_LinkLabel2.Visible = true;
                 ContextMenuAvailable = true;
                 Add_Playlist_Button.Visible = true;
+                AddAllPlaylistButtons();
                 Playlist_Button.Visible = true;
                 HomeList_Button.Visible = true;
 
@@ -333,10 +334,13 @@ namespace Movie_Catalog
         #region Playlist and Home List
         bool playlistButtonPressed = false;
         bool homelistButtonPressed = true;
-
+        int actualButtonPressed = 0;
         private void Playlist_Button_Click(object sender, EventArgs e)
         {
-            RefreshPlaylistGrid();
+            MonoFlat_Button button = sender as MonoFlat_Button;
+            int i = (int)button.Tag;
+            actualButtonPressed = i;
+            RefreshPlaylistGrid(i);
             playlistButtonPressed = true;
             homelistButtonPressed = false;
         }
@@ -411,11 +415,11 @@ namespace Movie_Catalog
         /// <summary>
         /// Refreshes dataGridView with films that are added to Playlist
         /// </summary>
-        private void RefreshPlaylistGrid()
+        private void RefreshPlaylistGrid(int tag)
         {
             List<Movies> movieList = new List<Movies>();
 
-            movieList = Methods.AddItemToPlaylist();
+            movieList = Methods.AddItemToPlaylist(tag);
             dataGridView1.DataSource = null;
             dataGridView1.DataSource = movieList;
 
@@ -521,7 +525,9 @@ namespace Movie_Catalog
 
             }
             if (playlistButtonPressed)
-                RefreshPlaylistGrid();
+            {
+                RefreshPlaylistGrid(actualButtonPressed);
+            }
             else if (homelistButtonPressed)
                 RefreshGrid();
         }
@@ -725,11 +731,101 @@ namespace Movie_Catalog
 
         #endregion
 
+        /// <summary>
+        /// calls AddPlaylistToDataBase() which add playlist to database
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Add_Playlist_Button_Click(object sender, EventArgs e)
+        {
+            AddPlaylistToDataBase();
+        }
+
+        /// <summary>
+        /// Add Playlist button in Playlist_Panel
+        /// </summary>
+        /// <param name="i">number of user's playlists</param>
+        public void createPlaylistButton(int i)
+        {
+            MovieDatabaseEntities db = new MovieDatabaseEntities();
+            var userID = getCurrentUserID();
+
+            var pl =
+            (from playlist in db.List_Of_Playlists
+             where playlist.UserID == userID && playlist.ID == i + 1
+             select playlist).FirstOrDefault();//.Playlist_Name).FirstOrDefault();
+            if (pl != null)
+            {
+                if (Playlists_Panel.Controls.Count == 0)
+                {
+                    MonoFlat_Button button = new MonoFlat_Button();
+                    button.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+                    button.Width = 89;
+                    button.Height = 19;
+                    button.Text = pl.Playlist_Name;
+                    button.Location = new Point(0, 0);
+                    button.Click += new EventHandler(Playlist_Button_Click);
+                    int tag = i + 1;
+                    button.Tag = tag;
+                    Playlists_Panel.Controls.Add(button);
+                }
+                else
+                {
+                    int maxi = 0;
+                    foreach (MonoFlat_Button but in Playlists_Panel.Controls)
+                    {
+                        if (Int32.Parse(but.Tag.ToString()) > maxi)
+                        {
+                            maxi = Int32.Parse(but.Tag.ToString());
+                        }
+                    }
+
+                    foreach (MonoFlat_Button item in Playlists_Panel.Controls)
+                    {
+                        if (item.Tag.Equals(maxi))
+                        {
+                            MonoFlat_Button prevButton = item;
+
+                            MonoFlat_Button button = new MonoFlat_Button();
+                            button.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+                            button.Width = 89;
+                            button.Height = 19;
+                            button.Text = pl.Playlist_Name;
+                            button.Location = new Point(prevButton.Bounds.Right + 6, 0);
+                            button.Click += new EventHandler(Playlist_Button_Click);
+                            int tag = i + 1;
+                            button.Tag = tag;
+                            Playlists_Panel.Controls.Add(button);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds all playlist buttons to Playlists_Panel after log in
+        /// </summary>
+        public void AddAllPlaylistButtons()
+        {
+            MovieDatabaseEntities db = new MovieDatabaseEntities();
+            var UserID = getCurrentUserID();
+
+            var numberOfPlaylists =
+                (from user in db.Users
+                 where user.UserID == UserID
+                 select user.Number_Of_Playlists).FirstOrDefault();
+
+            for (int i = 0; i < numberOfPlaylists; i++)
+            {
+                createPlaylistButton(i);
+            }
+        }
+
         public bool PlaylistButtonActive = true;
         /// <summary>
         /// Add playlist to List_Of_Playlists in database
         /// </summary>
-        private void Add_Playlist_Button_Click(object sender, EventArgs e)
+        public void AddPlaylistToDataBase()
         {
             if (PlaylistButtonActive)
             {
@@ -754,57 +850,8 @@ namespace Movie_Catalog
                 db.List_Of_Playlists.Add(playlist);
                 db.SaveChanges();
 
-                AddPlaylistButtonToPanel(i);
+                createPlaylistButton(i);
                 PlaylistButtonActive = true;
-            }
-        }
-        /// <summary>
-        /// Add Playlist button in Playlist_Panel
-        /// </summary>
-        /// <param name="i">number of user's playlists</param>
-        public void AddPlaylistButtonToPanel(int i)
-        {
-            MovieDatabaseEntities db = new MovieDatabaseEntities();
-            var userID = getCurrentUserID();
-
-            var text =
-            (from playlist in db.List_Of_Playlists
-             where playlist.UserID == userID && playlist.ID == i+1
-             select playlist.Playlist_Name).FirstOrDefault();
-
-            if(Playlists_Panel.Controls.Count == 0)
-            {
-                MonoFlat_Button button = new MonoFlat_Button();
-                button.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-                button.Width = 89;
-                button.Height = 19;
-                button.Text = text;
-                button.Location = new Point(0, 0);
-                button.Click += new EventHandler(ButtonClickOneEvent);
-                int tag = i + 1;
-                button.Tag = tag;
-                Playlists_Panel.Controls.Add(button);
-            }
-            else
-            {
-                foreach (MonoFlat_Button item in Playlists_Panel.Controls)
-                {
-                    if (item.Tag.Equals(i))
-                    {
-                        MonoFlat_Button prevButton = item;
-
-                        MonoFlat_Button button = new MonoFlat_Button();
-                        button.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-                        button.Width = 89;
-                        button.Height = 19;
-                        button.Text = text;
-                        button.Location = new Point(prevButton.Bounds.Right + 6, 0);
-                        button.Click += new EventHandler(ButtonClickOneEvent);
-                        int tag = i + 1;
-                        button.Tag = tag;
-                        Playlists_Panel.Controls.Add(button);
-                    }
-                }
             }
         }
 
@@ -841,7 +888,6 @@ namespace Movie_Catalog
                 }
             }
         }
-
 
         /// <summary>
         /// Playlist Button click event
