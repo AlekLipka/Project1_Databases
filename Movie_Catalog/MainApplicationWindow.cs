@@ -332,17 +332,115 @@ namespace Movie_Catalog
         bool playlistButtonPressed = false;
         bool homelistButtonPressed = true;
         int actualButtonPressed = 0; // 0 for home view; 1,2,3,... number of playlist
-
-        private void Playlist_Button_Click(object sender, EventArgs e)
+        MonoFlat_Button buttonToBeRemoved = null;
+        static MonoFlat_Button buttonToChangeName = null;
+        /// <summary>
+        /// open playlist view or open menu to remove playlist
+        /// </summary>
+        private void Playlist_Button_Click(object sender, MouseEventArgs e)
         {
-            MonoFlat_Button button = sender as MonoFlat_Button;
-            int i = (int)button.Tag;
-            actualButtonPressed = i;
-            RefreshPlaylistGrid(i);
-            playlistButtonPressed = true;
-            homelistButtonPressed = false;
+            if(e.Button == MouseButtons.Left)
+            {
+                MonoFlat_Button button = sender as MonoFlat_Button;
+                int i = (int)button.Tag;
+                actualButtonPressed = i;
+                RefreshPlaylistGrid(i);
+                playlistButtonPressed = true;
+                homelistButtonPressed = false;
+            }
+            if(e.Button == MouseButtons.Right)
+            {
+                MonoFlat_Button button = sender as MonoFlat_Button;
+                int i = (int)button.Tag;
+                buttonToBeRemoved = button;
+                buttonToChangeName = button;
+
+                ContextMenuStrip cm = new ContextMenuStrip();
+                cm.Items.Add("Remove Playlist");
+                cm.Items.Add("Change name");
+                cm.ItemClicked += new ToolStripItemClickedEventHandler(Playlist_Context_Menu_Button_Click);
+                cm.Show(button, new Point(e.X, e.Y));
+            }
         }
 
+        /// <summary>
+        /// Delete playlist from database or changes name of playlist
+        /// </summary>
+        private void Playlist_Context_Menu_Button_Click(object sender, ToolStripItemClickedEventArgs e)
+        {
+            
+            MovieDatabaseEntities db = new MovieDatabaseEntities();
+            
+            int i = (int)buttonToBeRemoved.Tag;
+            int usrID = getCurrentUserID();
+            var usr = db.Users.SingleOrDefault(o => o.UserID == usrID);
+            switch (e.ClickedItem.ToString())
+            {
+                case "Remove Playlist":
+                        Remove_Playlist(i, usrID, usr);
+                        break;
+
+                case "Change name":
+                        ChangePlaylistNameMessageBox myMessageBox = new ChangePlaylistNameMessageBox();
+                        myMessageBox.ShowDialog();
+                        break;
+            
+            }
+        }
+
+        public static void changeNameOfPlaylist(string newName)
+        {
+            MovieDatabaseEntities db = new MovieDatabaseEntities();
+            int usrID = getCurrentUserID();
+            var playlist = db.List_Of_Playlists.SingleOrDefault(o => o.ID == (int)buttonToChangeName.Tag && o.UserID == usrID);
+            playlist.Playlist_Name = newName;
+            db.SaveChanges();
+            buttonToChangeName.Text = playlist.Playlist_Name;
+            buttonToChangeName = null;
+        }
+
+        /// <summary>
+        /// removes playlist and button connected with it
+        /// </summary>
+        /// <param name="i">tg of removed button</param>
+        /// <param name="usrID">id of current user</param>
+        /// <param name="usr">Current user</param>
+        private void Remove_Playlist(int i, int usrID, User usr)
+        {
+            MovieDatabaseEntities db = new MovieDatabaseEntities();
+            foreach (Playlist pl in db.Playlists)
+            {
+                if (pl.PlaylistID == i && pl.UserID == usrID)
+                    db.Playlists.Remove(pl);
+            }
+
+            foreach (List_Of_Playlists lop in db.List_Of_Playlists)
+            {
+                if (lop.ID == i && lop.UserID == usrID)
+                {
+                    db.List_Of_Playlists.Remove(lop);
+                    usr.Number_Of_Playlists--;
+                }
+            }
+            db.SaveChanges();
+
+            deletePlaylistButton((int)buttonToBeRemoved.Tag);
+
+            //Playlists_Panel.Controls.Remove(buttonToBeRemoved);
+            buttonToBeRemoved = null;
+
+            foreach (MonoFlat_Button but in Playlists_Panel.Controls)
+            {
+                if ((int)but.Tag > i)
+                {
+                    but.Location = new Point(but.Location.X - 95, but.Location.Y);
+                }
+            }
+        }
+
+        /// <summary>
+        /// display list of movies added to database by the user
+        /// </summary>
         private void HomeList_Button_Click(object sender, EventArgs e)
         {
             RefreshGrid();
@@ -737,8 +835,6 @@ namespace Movie_Catalog
         /// <summary>
         /// calls AddPlaylistToDataBase() which add playlist to database
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Add_Playlist_Button_Click(object sender, EventArgs e)
         {
             AddPlaylistToDataBase();
@@ -756,7 +852,7 @@ namespace Movie_Catalog
             var pl =
             (from playlist in db.List_Of_Playlists
              where playlist.UserID == userID && playlist.ID == i + 1
-             select playlist).FirstOrDefault();//.Playlist_Name).FirstOrDefault();
+             select playlist).FirstOrDefault();
             if (pl != null)
             {
                 if (Playlists_Panel.Controls.Count == 0)
@@ -767,7 +863,7 @@ namespace Movie_Catalog
                     button.Height = 19;
                     button.Text = pl.Playlist_Name;
                     button.Location = new Point(0, 0);
-                    button.Click += new EventHandler(Playlist_Button_Click);
+                    button.MouseClick += new MouseEventHandler(Playlist_Button_Click);
                     int tag = i + 1;
                     button.Tag = tag;
                     Playlists_Panel.Controls.Add(button);
@@ -795,7 +891,7 @@ namespace Movie_Catalog
                             button.Height = 19;
                             button.Text = pl.Playlist_Name;
                             button.Location = new Point(prevButton.Bounds.Right + 6, 0);
-                            button.Click += new EventHandler(Playlist_Button_Click);
+                            button.MouseClick += new MouseEventHandler(Playlist_Button_Click);
                             int tag = i + 1;
                             button.Tag = tag;
                             Playlists_Panel.Controls.Add(button);
@@ -836,15 +932,24 @@ namespace Movie_Catalog
                 MovieDatabaseEntities db = new MovieDatabaseEntities();
                 var UserID = getCurrentUserID();
 
-                var i =
-                (from user in db.Users
-                 where user.UserID == UserID
-                 select user.Number_Of_Playlists).FirstOrDefault();
 
                 var usr = db.Users.SingleOrDefault(o => o.UserID == UserID);
+                var i = usr.Number_Of_Playlists;
                 usr.Number_Of_Playlists++; // Increase Number_Of_Playlists for the Current user
-
                 List_Of_Playlists playlist = new List_Of_Playlists();
+
+                while(true)
+                {
+                    var pl = db.List_Of_Playlists.SingleOrDefault(o => o.ID == i + 1 && o.UserID == usr.UserID);
+                    if(pl != null)
+                    {
+                        i++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
 
                 playlist.ID = i + 1;
                 playlist.UserID = UserID;
@@ -890,20 +995,6 @@ namespace Movie_Catalog
                     Playlists_Panel.Controls.Remove(button);
                 }
             }
-        }
-
-        /// <summary>
-        /// Playlist Button click event
-        /// </summary>
-        private void ButtonClickOneEvent(object sender, EventArgs e)
-        {
-            ///////Use Playlist_Button_Click() its defined on the top
-
-
-            MonoFlat_Button button = sender as MonoFlat_Button;
-            int i = (int)button.Tag;
-
-            MessageBox.Show("You clicked Playlist" + i + " button.");
         }
     }
 }
