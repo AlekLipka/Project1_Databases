@@ -31,7 +31,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainApplicationWindow));
             this.monoFlat_ThemeContainer1 = new MonoFlat.MonoFlat_ThemeContainer();
-            this.Playlist_Button = new MonoFlat.MonoFlat_Button();
             this.HomeList_Button = new MonoFlat.MonoFlat_Button();
             this.Playlists_Panel = new System.Windows.Forms.Panel();
             this.Add_Playlist_Button = new MonoFlat.MonoFlat_Button();
@@ -67,7 +66,6 @@
             // monoFlat_ThemeContainer1
             // 
             this.monoFlat_ThemeContainer1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(41)))), ((int)(((byte)(50)))));
-            this.monoFlat_ThemeContainer1.Controls.Add(this.Playlist_Button);
             this.monoFlat_ThemeContainer1.Controls.Add(this.HomeList_Button);
             this.monoFlat_ThemeContainer1.Controls.Add(this.Playlists_Panel);
             this.monoFlat_ThemeContainer1.Controls.Add(this.Add_Playlist_Button);
@@ -95,21 +93,6 @@
             this.monoFlat_ThemeContainer1.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultLocation;
             this.monoFlat_ThemeContainer1.TabIndex = 0;
             this.monoFlat_ThemeContainer1.Text = "Movie Catalog";
-            // 
-            // Playlist_Button
-            // 
-            this.Playlist_Button.BackColor = System.Drawing.Color.Transparent;
-            this.Playlist_Button.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.Playlist_Button.Image = null;
-            this.Playlist_Button.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.Playlist_Button.Location = new System.Drawing.Point(8, 84);
-            this.Playlist_Button.Name = "Playlist_Button";
-            this.Playlist_Button.Size = new System.Drawing.Size(89, 19);
-            this.Playlist_Button.TabIndex = 15;
-            this.Playlist_Button.Text = "Playlist";
-            this.Playlist_Button.TextAlignment = System.Drawing.StringAlignment.Center;
-            this.Playlist_Button.Visible = false;
-            this.Playlist_Button.Click += new System.EventHandler(this.Playlist_Button_Click);
             // 
             // HomeList_Button
             // 
@@ -483,7 +466,6 @@
         private MonoFlat.MonoFlat_Label monoFlat_Label3;
         private MonoFlat.MonoFlat_LinkLabel monoFlat_LinkLabel2;
         private MonoFlat.MonoFlat_Label welcome;
-        private MonoFlat.MonoFlat_Button Playlist_Button;
         private MonoFlat.MonoFlat_Button HomeList_Button;
         private System.Windows.Forms.ToolStripMenuItem configureDatabaseToolStripMenuItem;
         private System.Windows.Forms.Panel Playlists_Panel;

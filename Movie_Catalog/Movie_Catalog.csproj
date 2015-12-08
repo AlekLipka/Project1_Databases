@@ -129,6 +129,12 @@
     <Compile Include="Playlist.cs">
       <DependentUpon>MovieDatabase.tt</DependentUpon>
     </Compile>
+    <Compile Include="PlaylistsManagement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlaylistsManagement.Designer.cs">
+      <DependentUpon>PlaylistsManagement.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="sp_helpdiagramdefinition_Result.cs">
@@ -151,6 +157,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LoginPrompt.resx">
       <DependentUpon>LoginPrompt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlaylistsManagement.resx">
+      <DependentUpon>PlaylistsManagement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

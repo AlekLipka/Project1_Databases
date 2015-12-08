@@ -422,10 +422,10 @@ BEGIN")
         /// <summary>
         /// Adds information if movie is added to playlist
         /// </summary>
-        /// <param name="whichcase">Determines if movie is added to playlist</param>
+        /// <param name="idOfPlaylist">Determines if movie is added to playlist</param>
         /// <param name="UserName">The name of the user that is log in</param>
         /// <param name="film">The name of file that we want to set</param>
-        public static void AddToPlaylist(int whichcase, string UserName, string film)
+        public static void AddToPlaylist(int idOfPlaylist, string UserName, string film)
         {
             try
             {
@@ -437,24 +437,20 @@ BEGIN")
 
                 int usrID = usr.UserID;
 
-                var search = db.Playlists.SingleOrDefault(o => o.FilmID == movie.ID && o.UserID == usrID);
+                int maxID = -10;
+                foreach (var pl in db.Playlists)
+                    if (pl.ID > maxID)
+                        maxID = pl.ID;
 
-                if (search == null)
-                {
                     Playlist playlist = new Playlist();
 
+                    playlist.ID = maxID + 1;
                     playlist.FilmID = movie.ID;
                     playlist.UserID = usr.UserID;
-                    playlist.PlaylistID = whichcase;
+                    playlist.PlaylistID = idOfPlaylist;
 
                     db.Playlists.Add(playlist);
                     db.SaveChanges();
-                }
-                else if (search.PlaylistID != whichcase)
-                {
-                    search.PlaylistID = whichcase;
-                    db.SaveChanges();
-                }
             }
             catch (DbEntityValidationException e)
             { //In case of error while adding stuff to database
@@ -478,14 +474,15 @@ BEGIN")
         /// Removes record from Playlist in db with specified userID and filmID
         /// </summary>
         /// <param name="film">film that has to be removed from Playlist for current user</param>
-        public static void RemoveFromPlaylist(Movies film)
+        public static void RemoveFromPlaylist(Movies film, int playlistID)
         {
             var userID = MainApplicationWindow.getCurrentUserID();
             MovieDatabaseEntities db = new MovieDatabaseEntities();
             
             var queryPlaylist = from Playlist in db.Playlists
                                 where Playlist.UserID == userID && 
-                                Playlist.FilmID == film.MovieID
+                                Playlist.FilmID == film.MovieID &&
+                                Playlist.PlaylistID == playlistID
                                 select Playlist;
 
             foreach (var del in queryPlaylist)

@@ -183,7 +183,6 @@ namespace Movie_Catalog
                 ContextMenuAvailable = true;
                 Add_Playlist_Button.Visible = true;
                 AddAllPlaylistButtons();
-                Playlist_Button.Visible = true;
                 HomeList_Button.Visible = true;
 
                 welcome.Text = ("Welcome " + login);
@@ -306,8 +305,6 @@ namespace Movie_Catalog
             monoFlat_Panel1.Visible = true;
             monoFlat_LinkLabel2.Visible = false;
             Add_Playlist_Button.Visible = false;
-            Playlist_Button.Visible = false;
-            HomeList_Button.Visible = false;
             removeAllPlaylistButtons();
 
             welcome.Text = null;
@@ -334,7 +331,8 @@ namespace Movie_Catalog
         #region Playlist and Home List
         bool playlistButtonPressed = false;
         bool homelistButtonPressed = true;
-        int actualButtonPressed = 0;
+        int actualButtonPressed = 0; // 0 for home view; 1,2,3,... number of playlist
+
         private void Playlist_Button_Click(object sender, EventArgs e)
         {
             MonoFlat_Button button = sender as MonoFlat_Button;
@@ -348,6 +346,7 @@ namespace Movie_Catalog
         private void HomeList_Button_Click(object sender, EventArgs e)
         {
             RefreshGrid();
+            actualButtonPressed = 0;
             playlistButtonPressed = false;
             homelistButtonPressed = true;
         }
@@ -471,17 +470,18 @@ namespace Movie_Catalog
                     ContextMenuStrip m = new ContextMenuStrip();
                     if (film.LikeOrDislike != "Favourite")
                         m.Items.Add("Add to Favourite").Name = "Add to Favourite";
+                    
                     if (film.LikeOrDislike != "Hated")
                         m.Items.Add("Add to Hated").Name = "Add to Hated";
+                    
                     if (film.LikeOrDislike == "Favourite" || film.LikeOrDislike == "Hated")
                         m.Items.Add("Reset to Normal Status").Name = "Reset to Normal Status";
-                    if (db.Playlists.Any(p => p.FilmID == film.MovieID && p.UserID == userID))
+                    
+                    var usr = db.Users.SingleOrDefault(o => o.Username == UserName);
+
+                    if(usr.Number_Of_Playlists > 0)
                     {
-                        m.Items.Add("Remove from playlist").Name = "Remove from playlist";
-                    }
-                    else
-                    {
-                        m.Items.Add("Add to playlist").Name = "Add to playlist";
+                            m.Items.Add("Add to/Remove from playlist").Name = "Add to/Remove from playlist";
                     }
 
 
@@ -503,7 +503,9 @@ namespace Movie_Catalog
         /// </summary>
         public void m_Item_Clicked(object sender, ToolStripItemClickedEventArgs e)
         {
+            MovieDatabaseEntities db = new MovieDatabaseEntities();
             var film = ((List<Movies>)dataGridView1.DataSource).ElementAt(pt.Y);
+            var userID = getCurrentUserID();
             Console.Write("\n\nThe film is: " + film.File_Name);
             switch (e.ClickedItem.Name.ToString())
             {
@@ -516,11 +518,12 @@ namespace Movie_Catalog
                 case "Reset to Normal Status":
                     Methods.AddFavouriteOrHated(-1, UserName, film.File_Name);
                     break;
-                case "Add to playlist":
-                    Methods.AddToPlaylist(1, UserName, film.File_Name);
-                    break;
-                case "Remove from playlist":
-                    Methods.RemoveFromPlaylist(film);
+                case "Add to/Remove from playlist":
+                    PlaylistsManagement myMessageBox = new PlaylistsManagement();
+                    myMessageBox.AddAllPlaylistCheckBoxes(film);
+                    myMessageBox.ShowDialog();
+
+                    
                     break;
 
             }
